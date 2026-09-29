@@ -548,7 +548,8 @@
       "badge_new": "NUEVO",
       "badge_combo": "COMBO",
       "badge_sale": "-{{ percent }}%",
-      "installments_html": "{{ count }} cuotas<span class=\"ruvra-installments__long\"> sin interés</span> de {{ amount }}"
+      "installments_html": "{{ count }} cuotas<span class=\"ruvra-installments__long\"> sin interés</span> de {{ amount }}",
+      "view_combo": "Ver combo"
     },
     "sections": {
       "view_all": "Ver todo"

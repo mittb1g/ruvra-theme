@@ -1757,7 +1757,7 @@ shopify-account.ruvra-header__account {
 
 .ruvra-kit__big {
   margin: 0 0 0.4rem;
-  font: 700 9.6rem/0.85 var(--ruvra-font);
+  font: 700 7.2rem/0.85 var(--ruvra-font);
   letter-spacing: -0.06em;
 }
 
@@ -1793,92 +1793,61 @@ shopify-account.ruvra-header__account {
   flex-grow: 1;
 }
 
-.ruvra-kit__stamp {
-  flex-shrink: 0;
-  width: 8.4rem;
-  height: 8.4rem;
-  color: var(--ruvra-white);
-}
-
-.ruvra-kit__stamp text {
-  fill: currentColor;
-  font: 700 11px var(--ruvra-font);
-  letter-spacing: 0.08em;
-}
-
-.ruvra-kit__stamp-ring {
-  transform-origin: 60px 60px;
-  animation: ruvra-spin 14s linear infinite;
-}
-
-@keyframes ruvra-spin {
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-.ruvra-kit__items {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 2.4rem;
-  margin: 0;
-  padding: 0;
+.ruvra-kit__cards {
+  display: flex;
+  gap: 1.2rem;
+  margin: 0 -2rem;
+  padding: 0 2rem 0.4rem;
   list-style: none;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scroll-padding-inline: 2rem;
+  scrollbar-width: none;
 }
 
-.ruvra-kit__item {
-  position: relative;
+.ruvra-kit__cards::-webkit-scrollbar {
+  display: none;
 }
 
-.ruvra-kit__item + .ruvra-kit__item::before {
-  content: '+';
+.ruvra-kit__card {
+  flex: 0 0 78%;
+  scroll-snap-align: start;
+  box-sizing: border-box;
+  padding: 1.2rem 1.2rem 1.4rem;
+  border-radius: 1.6rem;
+  background: var(--ruvra-white);
+  color: var(--ruvra-text);
+}
+
+.ruvra-kit__card .ruvra-card__title {
+  height: auto;
+  display: block;
+}
+
+.ruvra-kit__card .ruvra-installments__long {
+  display: inline;
+}
+
+.ruvra-kit__plus {
   position: absolute;
-  top: calc(50% - 1.4rem);
-  left: -1.2rem;
+  top: 50%;
+  left: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 3.2rem;
+  height: 3.2rem;
   transform: translate(-50%, -50%);
+  border-radius: 50%;
+  background: var(--ruvra-black);
   color: var(--ruvra-white);
-  font-size: 2.4rem;
-  font-weight: 400;
+  font-size: 2rem;
+  font-weight: 600;
   line-height: 1;
 }
 
-.ruvra-kit__tile {
-  display: flex;
-  flex-direction: column;
-  gap: 0.8rem;
-  color: var(--ruvra-white);
-  text-decoration: none;
-}
-
-.ruvra-kit__media {
-  display: block;
-  aspect-ratio: 1 / 1;
-  overflow: hidden;
-  border-radius: 1.2rem;
-  background: var(--ruvra-white);
-}
-
-.ruvra-kit__img {
-  display: block;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  transition: transform 0.4s ease;
-}
-
-.ruvra-kit__tile:hover .ruvra-kit__img {
-  transform: scale(1.05);
-}
-
-.ruvra-kit__label {
-  font-size: 1.3rem;
-  font-weight: 600;
-  text-align: center;
-}
-
 @media (prefers-reduced-motion: reduce) {
-  .ruvra-kit__marquee-track,
-  .ruvra-kit__stamp-ring {
+  .ruvra-kit__marquee-track {
     animation: none;
   }
 }
@@ -1895,19 +1864,46 @@ shopify-account.ruvra-header__account {
   }
 
   .ruvra-kit__body {
+    gap: 4rem;
+    padding: 5.6rem 6.4rem 6.4rem;
+  }
+
+  .ruvra-kit__copy {
     display: grid;
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr);
-    align-items: center;
-    gap: 5.6rem;
-    padding: 6.4rem;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    grid-template-areas:
+      'big heading cta'
+      'big text cta';
+    align-items: end;
+    column-gap: 4rem;
+    row-gap: 1rem;
   }
 
   .ruvra-kit__big {
-    font-size: 17rem;
+    grid-area: big;
+    margin: 0;
   }
 
   .ruvra-kit__heading {
-    font-size: 5.6rem;
+    grid-area: heading;
+  }
+
+  .ruvra-kit__text {
+    grid-area: text;
+  }
+
+  .ruvra-kit__cta {
+    grid-area: cta;
+    align-self: center;
+    margin: 0;
+  }
+
+  .ruvra-kit__big {
+    font-size: 11rem;
+  }
+
+  .ruvra-kit__heading {
+    font-size: 4.8rem;
     line-height: 1;
   }
 
@@ -1925,21 +1921,20 @@ shopify-account.ruvra-header__account {
     flex-grow: 0;
   }
 
-  .ruvra-kit__stamp {
-    width: 10.4rem;
-    height: 10.4rem;
+  .ruvra-kit__cards {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 2rem;
+    margin: 0;
+    padding: 0;
+    overflow: visible;
   }
 
-  .ruvra-kit__items {
-    gap: 4rem;
+  .ruvra-kit__cards--2 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
-  .ruvra-kit__item + .ruvra-kit__item::before {
-    left: -2rem;
-    font-size: 3.6rem;
-  }
-
-  .ruvra-kit__label {
-    font-size: 1.5rem;
+  .ruvra-kit__card {
+    padding: 1.4rem 1.4rem 1.6rem;
   }
 }

@@ -153,32 +153,35 @@
     "promo": {
       "type": "ruvra-promo-banner",
       "blocks": {
-        "pad": {
-          "type": "item",
+        "combo-1": {
+          "type": "combo",
           "settings": {
-            "label": "Pad",
-            "demo": "pad"
+            "title": "Combo ruta: inflador + soporte",
+            "demo_a": "inflador",
+            "demo_b": "soporte"
           }
         },
-        "inflador": {
-          "type": "item",
+        "combo-2": {
+          "type": "combo",
           "settings": {
-            "label": "Inflador",
-            "demo": "inflador"
+            "title": "Combo carga: pad + soporte",
+            "demo_a": "pad",
+            "demo_b": "soporte"
           }
         },
-        "soporte": {
-          "type": "item",
+        "combo-3": {
+          "type": "combo",
           "settings": {
-            "label": "Soporte",
-            "demo": "soporte"
+            "title": "Combo completo: pad + inflador",
+            "demo_a": "pad",
+            "demo_b": "inflador"
           }
         }
       },
       "block_order": [
-        "pad",
-        "inflador",
-        "soporte"
+        "combo-1",
+        "combo-2",
+        "combo-3"
       ],
       "settings": {
         "discount": "[X]",
@@ -186,8 +189,7 @@
         "heading": "Armá tu kit de ruta.",
         "text": "Llevando 2 o más productos, pagás menos. Se aplica solo en el carrito.",
         "button_label": "Ver combos",
-        "button_link": "",
-        "stamp_text": "2 O MÁS · AHORRÁ {descuento}% · 2 O MÁS · AHORRÁ {descuento}% · "
+        "button_link": ""
       }
     }
   },

@@ -536,7 +536,8 @@
       "badge_new": "NEW",
       "badge_combo": "BUNDLE",
       "badge_sale": "-{{ percent }}%",
-      "installments_html": "{{ count }} interest-free<span class=\"ruvra-installments__long\"> installments</span> of {{ amount }}"
+      "installments_html": "{{ count }} interest-free<span class=\"ruvra-installments__long\"> installments</span> of {{ amount }}",
+      "view_combo": "View bundle"
     },
     "sections": {
       "view_all": "View all"
