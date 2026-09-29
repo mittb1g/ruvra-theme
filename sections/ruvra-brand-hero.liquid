@@ -1,0 +1,88 @@
+{%- liquid
+  assign hero_product = section.settings.product
+  assign button_url = section.settings.button_link | default: hero_product.url | default: routes.all_products_collection_url
+-%}
+
+<section class="ruvra-container ruvra-brand">
+  <div class="ruvra-brand__panel">
+    <span class="ruvra-brand__line ruvra-brand__line--v" aria-hidden="true"></span>
+    <span class="ruvra-brand__line ruvra-brand__line--h" aria-hidden="true"></span>
+    <span class="ruvra-brand__frame" aria-hidden="true"></span>
+    <span class="ruvra-brand__corner ruvra-brand__corner--tl" aria-hidden="true"></span>
+    <span class="ruvra-brand__corner ruvra-brand__corner--tr" aria-hidden="true"></span>
+    <span class="ruvra-brand__corner ruvra-brand__corner--bl" aria-hidden="true"></span>
+    <span class="ruvra-brand__corner ruvra-brand__corner--br" aria-hidden="true"></span>
+
+    <div class="ruvra-brand__center">
+      <h1 class="ruvra-brand__logo">
+        <span class="visually-hidden">{{ shop.name | escape }}</span>
+        {%- render 'ruvra-logo', height: 60, class: 'ruvra-brand__logo-svg' -%}
+      </h1>
+      {%- if section.settings.tagline != blank -%}
+        <p class="ruvra-brand__tagline">{{ section.settings.tagline | escape }}</p>
+      {%- endif -%}
+      {%- if section.settings.button_label != blank -%}
+        <a href="{{ button_url }}" class="ruvra-btn ruvra-btn--inverse">{{ section.settings.button_label | escape }}</a>
+      {%- endif -%}
+    </div>
+
+    {%- if section.settings.caption_left != blank -%}
+      <p class="ruvra-brand__caption ruvra-brand__caption--left">{{ section.settings.caption_left | escape }}</p>
+    {%- endif -%}
+    {%- if section.settings.caption_right != blank -%}
+      <p class="ruvra-brand__caption ruvra-brand__caption--right">{{ section.settings.caption_right | escape }}</p>
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "ruvra · Hero de marca",
+  "tag": "div",
+  "class": "section-ruvra-brand",
+  "settings": [
+    {
+      "type": "text",
+      "id": "tagline",
+      "label": "Bajada",
+      "default": "Accesorios automotrices para el uso de todos los días."
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Botón",
+      "default": "Comprar ahora"
+    },
+    {
+      "type": "product",
+      "id": "product",
+      "label": "Producto del botón",
+      "info": "El botón lleva a este producto. Si elegís un link abajo, tiene prioridad."
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Link del botón (opcional)"
+    },
+    {
+      "type": "text",
+      "id": "caption_left",
+      "label": "Leyenda abajo a la izquierda",
+      "default": "accesorios automotrices"
+    },
+    {
+      "type": "text",
+      "id": "caption_right",
+      "label": "Leyenda abajo a la derecha"
+    }
+  ],
+  "presets": [
+    {
+      "name": "ruvra · Hero de marca"
+    }
+  ],
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  }
+}
+{% endschema %}

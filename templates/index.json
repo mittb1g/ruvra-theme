@@ -62,7 +62,8 @@
         "interval": 6,
         "mobile_layout": "overlay",
         "mobile_ratio": "square"
-      }
+      },
+      "disabled": true
     },
     "benefits": {
       "type": "ruvra-benefits",
@@ -147,7 +148,8 @@
       "settings": {
         "title": "Comprá por categoría",
         "view_all_link": "/collections/all"
-      }
+      },
+      "disabled": true
     },
     "best_sellers": {
       "type": "ruvra-product-grid",
@@ -157,9 +159,21 @@
         "products_to_show": 4,
         "view_all_link": "/collections/all"
       }
+    },
+    "brand": {
+      "type": "ruvra-brand-hero",
+      "settings": {
+        "tagline": "Accesorios automotrices para el uso de todos los días.",
+        "button_label": "Comprar ahora",
+        "product": "ruvra-air-flow",
+        "button_link": "",
+        "caption_left": "accesorios automotrices",
+        "caption_right": ""
+      }
     }
   },
   "order": [
+    "brand",
     "hero",
     "best_sellers",
     "benefits",
