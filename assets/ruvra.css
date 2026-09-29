@@ -972,7 +972,7 @@ shopify-account.ruvra-header__account {
 .ruvra-benefits {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  margin: 2rem 0 0;
+  margin: 0;
   padding: 0;
   list-style: none;
   border: 1px solid var(--ruvra-border);
@@ -1646,10 +1646,6 @@ shopify-account.ruvra-header__account {
   .ruvra-hero__dots {
     justify-content: flex-start;
     margin-top: 2rem;
-  }
-
-  .ruvra-benefits {
-    margin-top: 0;
   }
 
   .ruvra-categories {
