@@ -54,6 +54,18 @@
                 class: 'ruvra-hero__img',
                 alt: block.settings.image.alt
             }}
+          {%- elsif kit.featured_media -%}
+            {%- assign kit_alt = kit.featured_media.alt | default: kit.title | escape -%}
+            {{
+              kit.featured_media.preview_image
+              | image_url: width: 1600
+              | image_tag:
+                loading: 'eager',
+                widths: '400, 600, 800, 1000, 1200, 1600',
+                sizes: '(min-width: 1440px) 672px, (min-width: 990px) 50vw, 100vw',
+                class: 'ruvra-hero__img',
+                alt: kit_alt
+            }}
           {%- elsif block.settings.demo != 'none' -%}
             {%- liquid
               assign demo_loading = 'lazy'
@@ -198,8 +210,8 @@
         {
           "type": "product",
           "id": "product",
-          "label": "Kit (producto)",
-          "info": "Elegí el kit: se muestra su precio con el tachado y el botón principal lleva al kit."
+          "label": "Producto",
+          "info": "Muestra su precio y cuotas, el botón principal lleva al producto y, si no subís imagen, usa la foto del producto."
         },
         {
           "type": "image_picker",

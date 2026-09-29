@@ -753,6 +753,10 @@ shopify-account.ruvra-header__account {
   overflow: hidden;
 }
 
+.ruvra-hero--m-stacked .ruvra-hero__media--contain {
+  height: 26rem;
+}
+
 .ruvra-hero__img {
   display: block;
   width: 100%;

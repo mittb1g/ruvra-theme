@@ -3,67 +3,33 @@
     "hero": {
       "type": "ruvra-hero",
       "blocks": {
-        "kit-ruta": {
+        "producto": {
           "type": "slide",
           "settings": {
-            "button_link_1": "",
-            "button_label_2": "Ver todos los kits",
-            "button_link_2": "",
-            "demo": "inflador",
+            "product": "ruvra-air-flow",
+            "fit": "contain",
+            "demo": "none",
             "demo_2": "none",
-            "badge": "KIT · AHORRÁ [X]%",
-            "heading": "Kit de ruta.",
-            "text": "Inflador digital + soporte magnético. Todo lo que necesitás para salir tranquilo.",
-            "text_mobile": "Inflador digital + soporte magnético.",
-            "button_label_1": "Ver kit de ruta",
-            "fit": "contain"
-          }
-        },
-        "kit-arreglo": {
-          "type": "slide",
-          "settings": {
-            "button_link_1": "",
-            "button_label_2": "Ver todos los kits",
-            "button_link_2": "",
-            "demo": "inflador",
-            "demo_2": "none",
-            "badge": "KIT · AHORRÁ [X]%",
-            "heading": "Kit arreglo.",
-            "text": "[Qué trae el kit arreglo]",
+            "badge": "NUEVO",
+            "heading": "Ruvra Air Flow.",
+            "text": "Inflador digital portátil a batería. [Texto del producto]",
             "text_mobile": "",
-            "button_label_1": "Ver kit arreglo",
-            "fit": "contain"
-          }
-        },
-        "kit-organizador": {
-          "type": "slide",
-          "settings": {
+            "button_label_1": "Comprar ahora",
             "button_link_1": "",
-            "button_label_2": "Ver todos los kits",
-            "button_link_2": "",
-            "demo": "pad",
-            "demo_2": "none",
-            "badge": "KIT · AHORRÁ [X]%",
-            "heading": "Kit organizador.",
-            "text": "[Qué trae el kit organizador]",
-            "text_mobile": "",
-            "button_label_1": "Ver kit organizador",
-            "fit": "cover"
+            "button_label_2": "",
+            "button_link_2": ""
           }
         }
       },
       "block_order": [
-        "kit-ruta",
-        "kit-arreglo",
-        "kit-organizador"
+        "producto"
       ],
       "settings": {
-        "autoplay": true,
+        "autoplay": false,
         "interval": 6,
-        "mobile_layout": "overlay",
+        "mobile_layout": "stacked",
         "mobile_ratio": "square"
-      },
-      "disabled": true
+      }
     },
     "benefits": {
       "type": "ruvra-benefits",
@@ -169,7 +135,8 @@
         "button_link": "",
         "caption_left": "accesorios automotrices",
         "caption_right": ""
-      }
+      },
+      "disabled": true
     }
   },
   "order": [
