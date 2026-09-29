@@ -23,7 +23,7 @@
             endif
           endif
         -%}
-        <div class="ruvra-hero__media{% if has_second %} ruvra-hero__media--split{% endif %}">
+        <div class="ruvra-hero__media ruvra-hero__media--{{ block.settings.fit }}{% if has_second %} ruvra-hero__media--split{% endif %}">
           {%- if block.settings.video != blank -%}
             {{
               block.settings.video
@@ -187,7 +187,7 @@
           "label": "Cuadrado"
         }
       ],
-      "default": "portrait"
+      "default": "square"
     }
   ],
   "blocks": [
@@ -212,6 +212,22 @@
           "id": "video",
           "label": "Video (opcional)",
           "info": "Si subís un video, se muestra en lugar de la imagen: sin sonido, en loop. Ideal: menos de 15 s y vertical u horizontal 4:5."
+        },
+        {
+          "type": "select",
+          "id": "fit",
+          "label": "Cómo se ve la imagen",
+          "options": [
+            {
+              "value": "cover",
+              "label": "Llenar todo (foto de ambiente)"
+            },
+            {
+              "value": "contain",
+              "label": "Producto completo (foto con fondo blanco)"
+            }
+          ],
+          "default": "cover"
         },
         {
           "type": "select",

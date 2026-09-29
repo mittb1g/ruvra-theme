@@ -823,6 +823,17 @@ shopify-account.ruvra-header__account {
   position: relative;
 }
 
+.ruvra-hero__media--contain {
+  background: var(--ruvra-surface);
+}
+
+.ruvra-hero__media--contain .ruvra-hero__img {
+  box-sizing: border-box;
+  padding: 2.4rem;
+  object-fit: contain;
+  mix-blend-mode: multiply;
+}
+
 .ruvra-hero__media--split {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -940,6 +951,11 @@ shopify-account.ruvra-header__account {
 
   .ruvra-hero--m-overlay .ruvra-hero__dot[aria-current='true'] {
     background: var(--ruvra-white);
+  }
+
+  .ruvra-hero--m-overlay .ruvra-hero__media--contain .ruvra-hero__img {
+    height: 72%;
+    padding: 1.6rem;
   }
 
   .ruvra-hero--m-overlay .ruvra-hero__plus {
@@ -1581,7 +1597,7 @@ shopify-account.ruvra-header__account {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
     grid-template-areas: 'content media';
-    height: 56rem;
+    height: 48rem;
   }
 
   .ruvra-hero__media {

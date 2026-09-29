@@ -15,7 +15,8 @@
             "heading": "Kit de ruta.",
             "text": "Inflador digital + soporte magnético. Todo lo que necesitás para salir tranquilo.",
             "text_mobile": "Inflador digital + soporte magnético.",
-            "button_label_1": "Ver kit de ruta"
+            "button_label_1": "Ver kit de ruta",
+            "fit": "contain"
           }
         },
         "kit-arreglo": {
@@ -30,7 +31,8 @@
             "heading": "Kit arreglo.",
             "text": "[Qué trae el kit arreglo]",
             "text_mobile": "",
-            "button_label_1": "Ver kit arreglo"
+            "button_label_1": "Ver kit arreglo",
+            "fit": "contain"
           }
         },
         "kit-organizador": {
@@ -45,7 +47,8 @@
             "heading": "Kit organizador.",
             "text": "[Qué trae el kit organizador]",
             "text_mobile": "",
-            "button_label_1": "Ver kit organizador"
+            "button_label_1": "Ver kit organizador",
+            "fit": "cover"
           }
         }
       },
@@ -58,7 +61,7 @@
         "autoplay": true,
         "interval": 6,
         "mobile_layout": "overlay",
-        "mobile_ratio": "portrait"
+        "mobile_ratio": "square"
       }
     },
     "benefits": {
