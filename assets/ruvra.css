@@ -753,7 +753,7 @@ shopify-account.ruvra-header__account {
   position: relative;
   justify-content: flex-end;
   min-height: 48rem;
-  background: var(--ruvra-hero-bg-image) center / cover no-repeat, var(--ruvra-surface);
+  background: var(--ruvra-hero-bg-image-phone, var(--ruvra-hero-bg-image)) center / cover no-repeat, var(--ruvra-hero-bg, var(--ruvra-surface));
 }
 
 /* Con imagen de fondo, la imagen es todo el visual: sin foto de producto encima */
@@ -778,6 +778,7 @@ shopify-account.ruvra-header__account {
 @media screen and (min-width: 990px) {
   .ruvra-hero__slide.has-bg-image {
     min-height: 0;
+    background-image: var(--ruvra-hero-bg-image);
   }
 
   .ruvra-hero__slide.has-bg-image::before {

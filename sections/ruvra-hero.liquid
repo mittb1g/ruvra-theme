@@ -66,11 +66,14 @@
 
         assign heading = block.settings.heading
         if heading == blank and hp != blank
-          assign heading = hp.title
+          assign heading = hp.metafields.custom.hero_title | default: hp.title
         endif
         assign text = block.settings.text
         if text == blank and hp != blank
-          assign text = hp.description | strip_html | truncatewords: 20
+          assign text = hp.metafields.custom.hero_text | default: ''
+          if text == blank
+            assign text = hp.description | strip_html | truncatewords: 20
+          endif
         endif
 
         assign primary_label = block.settings.button_label_1
@@ -90,20 +93,39 @@
           assign bg_style = ''
           assign bg_class = ''
           if hp != blank
-            assign mf_bg = hp.metafields.custom.hero_background | default: hp.metafields.custom['hero-background']
-            if mf_bg != blank
-              if mf_bg.type == 'color'
-                assign bg_color = mf_bg.value
-                assign bg_style = '--ruvra-hero-bg: ' | append: bg_color | append: ';'
-                assign bg_brightness = bg_color | color_brightness
-                if bg_brightness < 128
-                  assign bg_class = ' is-dark'
+            assign mfc = hp.metafields.custom
+            assign bg_color = mfc.hero_background_color.value
+            assign bg_img_d = mfc.hero_background_desktop
+            assign bg_img_m = mfc.hero_background_phone
+            assign legacy_bg = mfc.hero_background | default: mfc['hero-background']
+            if legacy_bg != blank
+              if legacy_bg.type == 'color'
+                if bg_color == blank
+                  assign bg_color = legacy_bg.value
                 endif
-              else
-                assign bg_url = mf_bg | image_url: width: 2000
-                assign bg_style = '--ruvra-hero-bg-image: url(' | append: bg_url | append: ');'
-                assign bg_class = ' has-bg-image'
+              elsif bg_img_d == blank
+                assign bg_img_d = legacy_bg
               endif
+            endif
+            if bg_img_d == blank and bg_img_m != blank
+              assign bg_img_d = bg_img_m
+            endif
+
+            if bg_color != blank
+              assign bg_style = '--ruvra-hero-bg: ' | append: bg_color | append: ';'
+              assign bg_brightness = bg_color | color_brightness
+              if bg_brightness < 128
+                assign bg_class = ' is-dark'
+              endif
+            endif
+            if bg_img_d != blank
+              assign bg_url_d = bg_img_d | image_url: width: 2400
+              assign bg_url_m = bg_url_d
+              if bg_img_m != blank
+                assign bg_url_m = bg_img_m | image_url: width: 1200
+              endif
+              assign bg_style = bg_style | append: '--ruvra-hero-bg-image: url(' | append: bg_url_d | append: ');--ruvra-hero-bg-image-phone: url(' | append: bg_url_m | append: ');'
+              assign bg_class = bg_class | append: ' has-bg-image'
             endif
           endif
         -%}
