@@ -1,0 +1,22 @@
+{% comment %}
+  Título de sección + link "Ver todo" alineado a la derecha.
+
+  Accepts:
+  - title: {String}
+  - link: {String} url del "Ver todo" (opcional)
+  - link_label: {String} texto del link (opcional, default "Ver todo")
+{% endcomment %}
+{%- if title != blank or link != blank -%}
+  <div class="ruvra-section-head">
+    {%- if title != blank -%}
+      <h2 class="ruvra-section-head__title">{{ title | escape }}</h2>
+    {%- endif -%}
+    {%- if link != blank -%}
+      {%- assign view_all_label = link_label -%}
+      {%- if view_all_label == blank -%}
+        {%- assign view_all_label = 'ruvra.sections.view_all' | t -%}
+      {%- endif -%}
+      <a class="ruvra-section-head__link" href="{{ link }}">{{ view_all_label | escape }}</a>
+    {%- endif -%}
+  </div>
+{%- endif -%}

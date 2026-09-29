@@ -1,0 +1,31 @@
+{% comment %}
+  Contenido de una columna del footer (se usa en desktop y en el acordeón de celular).
+
+  Accepts:
+  - block: {Object} bloque 'menu' o 'payments' de ruvra-footer
+{% endcomment %}
+{%- case block.type -%}
+  {%- when 'menu' -%}
+    <ul class="ruvra-footer__list" role="list">
+      {%- for link in block.settings.menu.links -%}
+        <li><a href="{{ link.url }}">{{ link.title | escape }}</a></li>
+      {%- endfor -%}
+    </ul>
+  {%- when 'payments' -%}
+    <ul class="ruvra-footer__chips" role="list">
+      {%- assign methods = block.settings.methods | split: ',' -%}
+      {%- for method in methods -%}
+        {%- assign method_name = method | strip -%}
+        {%- if method_name != blank -%}
+          <li class="ruvra-footer__chip">{{ method_name | escape }}</li>
+        {%- endif -%}
+      {%- endfor -%}
+    </ul>
+    {%- if block.settings.show_icons -%}
+      <ul class="ruvra-footer__payment-icons" role="list">
+        {%- for type in shop.enabled_payment_types -%}
+          <li>{{ type | payment_type_svg_tag: class: 'icon icon--full-color' }}</li>
+        {%- endfor -%}
+      </ul>
+    {%- endif -%}
+{%- endcase -%}

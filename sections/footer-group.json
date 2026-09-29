@@ -1,0 +1,21 @@
+{
+  "name": "t:sections.footer.name",
+  "type": "footer",
+  "sections": {
+    "footer": {
+      "type": "ruvra-footer",
+      "blocks": {
+        "tienda": { "type": "menu", "settings": { "title": "Tienda", "menu": "main-menu" } },
+        "ayuda": { "type": "menu", "settings": { "title": "Ayuda", "menu": "footer" } },
+        "pagos": { "type": "payments", "settings": { "title": "Medios de pago", "methods": "Tarjetas, Mercado Pago, Transferencia", "show_icons": false } }
+      },
+      "block_order": ["tienda", "ayuda", "pagos"],
+      "settings": {
+        "tagline": "Accesorios automotrices para el uso de todos los días.",
+        "copyright_text": "Todos los derechos reservados.",
+        "legal_menu": ""
+      }
+    }
+  },
+  "order": ["footer"]
+}

@@ -1,0 +1,101 @@
+<div class="ruvra-block ruvra-container">
+  <div class="ruvra-newsletter">
+    <div class="ruvra-newsletter__copy">
+      {%- if section.settings.heading != blank -%}
+        <h2 class="ruvra-newsletter__heading">{{ section.settings.heading | escape }}</h2>
+      {%- endif -%}
+      {%- if section.settings.text != blank -%}
+        <p class="ruvra-newsletter__text">{{ section.settings.text | escape }}</p>
+      {%- endif -%}
+    </div>
+
+    {%- form 'customer', id: 'RuvraNewsletter', class: 'ruvra-newsletter__form' -%}
+      <input type="hidden" name="contact[tags]" value="newsletter">
+      <label class="visually-hidden" for="RuvraNewsletter-email">{{ section.settings.placeholder }}</label>
+      <input
+        id="RuvraNewsletter-email"
+        class="ruvra-input"
+        type="email"
+        name="contact[email]"
+        value="{{ form.email }}"
+        placeholder="{{ section.settings.placeholder | escape }}"
+        autocomplete="email"
+        autocorrect="off"
+        autocapitalize="off"
+        required
+        aria-required="true"
+        {% if form.errors %}
+          aria-invalid="true" aria-describedby="RuvraNewsletter-error"
+        {% elsif form.posted_successfully? %}
+          aria-describedby="RuvraNewsletter-success"
+        {% endif %}
+      >
+      <button type="submit" class="ruvra-btn">{{ section.settings.button_label | escape }}</button>
+
+      {%- if form.errors -%}
+        <p class="ruvra-newsletter__msg ruvra-newsletter__msg--error" id="RuvraNewsletter-error" role="alert">
+          {{- form.errors.translated_fields.email | capitalize }}
+          {{ form.errors.messages.email -}}
+        </p>
+      {%- elsif form.posted_successfully? -%}
+        <p class="ruvra-newsletter__msg" id="RuvraNewsletter-success" role="status" tabindex="-1" autofocus>
+          {{- section.settings.success_message | escape -}}
+        </p>
+        <script>
+          // Evento propio para el trackeo (lo toma el pixel personalizado como "Lead").
+          document.addEventListener('DOMContentLoaded', () => {
+            window.Shopify?.analytics?.publish?.('ruvra_newsletter_signup', { location: 'home' });
+          });
+        </script>
+      {%- endif -%}
+    {%- endform -%}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "ruvra · Newsletter",
+  "tag": "section",
+  "class": "section-ruvra-newsletter",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Título",
+      "default": "Sumate a la comunidad ruvra."
+    },
+    {
+      "type": "textarea",
+      "id": "text",
+      "label": "Texto",
+      "default": "Recibí [beneficio] en tu primera compra y enterate antes de cada lanzamiento."
+    },
+    {
+      "type": "text",
+      "id": "placeholder",
+      "label": "Texto del campo",
+      "default": "Tu email"
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Botón",
+      "default": "Suscribirme"
+    },
+    {
+      "type": "text",
+      "id": "success_message",
+      "label": "Mensaje al suscribirse",
+      "default": "¡Listo! Ya estás adentro. Revisá tu mail."
+    }
+  ],
+  "presets": [
+    {
+      "name": "ruvra · Newsletter"
+    }
+  ],
+  "disabled_on": {
+    "groups": ["header"]
+  }
+}
+{% endschema %}

@@ -1,0 +1,159 @@
+{% comment %}
+  Tarjeta de producto de ruvra: foto sobre fondo gris, etiqueta (COMBO / -X% / NUEVO),
+  título, precio, cuotas y botón de agregar al carrito (abre el carrito lateral de Dawn).
+
+  Accepts:
+  - card_product: {Object} producto (si falta, muestra un placeholder)
+  - section_id: {String} id de la sección (requerido para el formulario)
+  - eager: {Boolean} cargar la foto sin lazy loading (opcional)
+
+  Usage:
+  {% render 'ruvra-card-product', card_product: product, section_id: section.id %}
+{% endcomment %}
+
+{%- if card_product == blank -%}
+  <div class="ruvra-card ruvra-card--placeholder">
+    <div class="ruvra-card__media">{{ 'product-apparel-1' | placeholder_svg_tag: 'ruvra-card__placeholder' }}</div>
+    <p class="ruvra-card__title">{{ 'onboarding.product_title' | t }}</p>
+    <div class="ruvra-price"><span class="ruvra-price__current">{{ 1999900 | money }}</span></div>
+  </div>
+{%- else -%}
+  {%- liquid
+    assign tag_new = settings.ruvra_tag_new | downcase | strip
+    assign tag_combo = settings.ruvra_tag_combo | downcase | strip
+    assign is_new = false
+    assign is_combo = false
+    for tag in card_product.tags
+      assign tag_down = tag | downcase
+      if tag_down == tag_new
+        assign is_new = true
+      elsif tag_down == tag_combo
+        assign is_combo = true
+      endif
+    endfor
+
+    assign variant = card_product.selected_or_first_available_variant
+    assign discount_percent = 0
+    if variant.compare_at_price > variant.price
+      assign discount_percent = variant.compare_at_price | minus: variant.price | times: 100.0 | divided_by: variant.compare_at_price | round
+    endif
+
+    assign split_media = false
+    if is_combo and card_product.media.size > 1
+      assign split_media = true
+    endif
+
+    assign loading = 'lazy'
+    if eager
+      assign loading = 'eager'
+    endif
+
+    assign form_id = 'ruvra-add-' | append: section_id | append: '-' | append: card_product.id
+  -%}
+
+  <div class="ruvra-card">
+    <div class="ruvra-card__media{% if split_media %} ruvra-card__media--split{% endif %}">
+      <a href="{{ card_product.url }}" class="ruvra-card__media-link" tabindex="-1" aria-hidden="true">
+        {%- if split_media -%}
+          {%- for media in card_product.media limit: 2 -%}
+            {{
+              media.preview_image
+              | image_url: width: 600
+              | image_tag:
+                loading: loading,
+                widths: '200, 300, 400, 600',
+                sizes: '(min-width: 990px) 170px, 25vw',
+                alt: '',
+                class: 'ruvra-card__img'
+            }}
+          {%- endfor -%}
+        {%- elsif card_product.featured_media -%}
+          {{
+            card_product.featured_media.preview_image
+            | image_url: width: 900
+            | image_tag:
+              loading: loading,
+              widths: '300, 400, 600, 900',
+              sizes: '(min-width: 990px) 330px, 50vw',
+              alt: card_product.featured_media.alt | default: card_product.title,
+              class: 'ruvra-card__img'
+          }}
+        {%- else -%}
+          {{ 'product-apparel-1' | placeholder_svg_tag: 'ruvra-card__placeholder' }}
+        {%- endif -%}
+      </a>
+
+      {%- if is_combo -%}
+        <span class="ruvra-badge">{{ 'ruvra.card.badge_combo' | t }}</span>
+      {%- elsif discount_percent > 0 -%}
+        <span class="ruvra-badge ruvra-badge--sale">{{ 'ruvra.card.badge_sale' | t: percent: discount_percent }}</span>
+      {%- elsif is_new -%}
+        <span class="ruvra-badge">{{ 'ruvra.card.badge_new' | t }}</span>
+      {%- endif -%}
+
+      {%- if settings.ruvra_show_wishlist -%}
+        <button
+          type="button"
+          class="ruvra-card__fav"
+          aria-label="{{ 'ruvra.card.add_favorite' | t }}"
+          aria-pressed="false"
+          data-ruvra-fav="{{ card_product.handle }}"
+        >
+          {%- render 'ruvra-icon', icon: 'heart', size: 20 -%}
+        </button>
+      {%- endif -%}
+    </div>
+
+    <h3 class="ruvra-card__title" id="title-{{ section_id }}-{{ card_product.id }}">
+      <a href="{{ card_product.url }}">{{ card_product.title | escape }}</a>
+    </h3>
+
+    {%- render 'ruvra-price', product: card_product -%}
+
+    {%- if card_product.has_only_default_variant -%}
+      <product-form class="ruvra-card__form" data-section-id="{{ section_id }}">
+        {%- form 'product', card_product, id: form_id, novalidate: 'novalidate', data-type: 'add-to-cart-form' -%}
+          <input
+            type="hidden"
+            name="id"
+            value="{{ variant.id }}"
+            class="product-variant-id"
+            {% unless variant.available %}
+              disabled
+            {% endunless %}
+          >
+          <button
+            id="{{ form_id }}-submit"
+            type="submit"
+            name="add"
+            class="ruvra-btn ruvra-btn--sm ruvra-card__add"
+            aria-labelledby="{{ form_id }}-submit title-{{ section_id }}-{{ card_product.id }}"
+            aria-live="polite"
+            data-sold-out-message="true"
+            {% unless variant.available %}
+              disabled
+            {% endunless %}
+          >
+            <span>
+              {%- if variant.available -%}
+                <span class="ruvra-card__add-long">{{ 'products.product.add_to_cart' | t }}</span>
+                <span class="ruvra-card__add-short">{{ 'ruvra.card.add_short' | t }}</span>
+              {%- else -%}
+                {{ 'products.product.sold_out' | t }}
+              {%- endif -%}
+            </span>
+            <span class="sold-out-message hidden">{{ 'products.product.sold_out' | t }}</span>
+            {%- render 'loading-spinner' -%}
+          </button>
+          <div class="product-form__error-message-wrapper" role="alert" hidden>
+            <span class="product-form__error-message"></span>
+          </div>
+        {%- endform -%}
+      </product-form>
+    {%- else -%}
+      <a href="{{ card_product.url }}" class="ruvra-btn ruvra-btn--sm ruvra-card__add">
+        {{- 'products.product.choose_options' | t -}}
+      </a>
+    {%- endif -%}
+  </div>
+{%- endif -%}

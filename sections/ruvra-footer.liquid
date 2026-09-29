@@ -1,0 +1,167 @@
+{%- liquid
+  assign social_links = ''
+  if settings.social_instagram_link != blank
+    assign social_links = social_links | append: 'instagram|'
+  endif
+  if settings.social_tiktok_link != blank
+    assign social_links = social_links | append: 'tiktok|'
+  endif
+  if settings.social_facebook_link != blank
+    assign social_links = social_links | append: 'facebook|'
+  endif
+  if settings.social_youtube_link != blank
+    assign social_links = social_links | append: 'youtube|'
+  endif
+  assign social_list = social_links | split: '|'
+-%}
+
+{%- capture footer_columns_mobile -%}
+  {%- for block in section.blocks -%}
+    <details class="ruvra-footer__acc" {{ block.shopify_attributes }}>
+      <summary class="ruvra-footer__acc-summary">
+        {{- block.settings.title | escape -}}
+        <span class="ruvra-footer__acc-icon" aria-hidden="true"></span>
+      </summary>
+      <div class="ruvra-footer__acc-body">
+        {%- render 'ruvra-footer-column-body', block: block -%}
+      </div>
+    </details>
+  {%- endfor -%}
+{%- endcapture -%}
+
+<footer class="ruvra-footer">
+  <div class="ruvra-container">
+    <div class="ruvra-footer__top">
+      <div class="ruvra-footer__brand">
+        {%- render 'ruvra-logo', height: 15.7 -%}
+        {%- if section.settings.tagline != blank -%}
+          <p class="ruvra-footer__tagline">{{ section.settings.tagline | escape }}</p>
+        {%- endif -%}
+      </div>
+
+      {%- for block in section.blocks -%}
+        <div class="ruvra-footer__col" {{ block.shopify_attributes }}>
+          <p class="ruvra-footer__title">{{ block.settings.title | escape }}</p>
+          {%- render 'ruvra-footer-column-body', block: block -%}
+        </div>
+      {%- endfor -%}
+
+      <div class="ruvra-footer__accordions">{{ footer_columns_mobile }}</div>
+    </div>
+
+    <div class="ruvra-footer__bottom">
+      <p class="ruvra-footer__copy">
+        © {{ 'now' | date: '%Y' }} {{ shop.name | escape }}. {{ section.settings.copyright_text | escape }}
+      </p>
+      <ul class="ruvra-footer__links" role="list">
+        {%- for link in section.settings.legal_menu.links -%}
+          <li><a href="{{ link.url }}">{{ link.title | escape }}</a></li>
+        {%- endfor -%}
+        {%- for network in social_list -%}
+          {%- liquid
+            case network
+              when 'instagram'
+                assign network_url = settings.social_instagram_link
+                assign network_label = 'Instagram'
+              when 'tiktok'
+                assign network_url = settings.social_tiktok_link
+                assign network_label = 'TikTok'
+              when 'facebook'
+                assign network_url = settings.social_facebook_link
+                assign network_label = 'Facebook'
+              when 'youtube'
+                assign network_url = settings.social_youtube_link
+                assign network_label = 'YouTube'
+            endcase
+          -%}
+          <li><a href="{{ network_url }}" target="_blank" rel="noopener">{{ network_label }}</a></li>
+        {%- endfor -%}
+      </ul>
+    </div>
+  </div>
+</footer>
+
+{% schema %}
+{
+  "name": "ruvra · Footer",
+  "tag": "div",
+  "class": "section-ruvra-footer",
+  "max_blocks": 4,
+  "settings": [
+    {
+      "type": "text",
+      "id": "tagline",
+      "label": "Bajada de marca",
+      "default": "Accesorios automotrices para el uso de todos los días."
+    },
+    {
+      "type": "text",
+      "id": "copyright_text",
+      "label": "Texto de derechos",
+      "default": "Todos los derechos reservados."
+    },
+    {
+      "type": "link_list",
+      "id": "legal_menu",
+      "label": "Links legales (abajo)",
+      "info": "En Argentina es obligatorio el \"Botón de arrepentimiento\" visible en la home. Armá un menú con ese link (y el de Defensa del Consumidor)."
+    },
+    {
+      "type": "paragraph",
+      "content": "Las redes (Instagram, TikTok…) se cargan en Configuración del tema → Redes sociales."
+    }
+  ],
+  "blocks": [
+    {
+      "type": "menu",
+      "name": "Columna de links",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Título",
+          "default": "Tienda"
+        },
+        {
+          "type": "link_list",
+          "id": "menu",
+          "label": "Menú"
+        }
+      ]
+    },
+    {
+      "type": "payments",
+      "name": "Medios de pago",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Título",
+          "default": "Medios de pago"
+        },
+        {
+          "type": "text",
+          "id": "methods",
+          "label": "Medios (separados por coma)",
+          "default": "Tarjetas, Mercado Pago, Transferencia"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_icons",
+          "label": "Mostrar además los logos de Shopify",
+          "default": false
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "ruvra · Footer"
+    }
+  ],
+  "enabled_on": {
+    "groups": ["footer"]
+  }
+}
+{% endschema %}

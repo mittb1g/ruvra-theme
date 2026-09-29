@@ -1,0 +1,47 @@
+{
+  "name": "t:sections.header.name",
+  "type": "header",
+  "sections": {
+    "announcement": {
+      "type": "ruvra-announcement-bar",
+      "blocks": {
+        "envio": {
+          "type": "message",
+          "settings": {
+            "text": "Envío gratis en compras desde $[MONTO]",
+            "text_mobile": "Envío gratis desde $[MONTO]",
+            "link": ""
+          }
+        },
+        "cuotas": {
+          "type": "message",
+          "settings": {
+            "text": "[N] cuotas sin interés",
+            "text_mobile": "",
+            "link": ""
+          }
+        }
+      },
+      "block_order": [
+        "envio",
+        "cuotas"
+      ],
+      "settings": {}
+    },
+    "header": {
+      "type": "ruvra-header",
+      "settings": {
+        "menu": "main-menu",
+        "highlight_title": "Ofertas",
+        "search_placeholder": "¿Qué estás buscando?",
+        "search_label": "Buscar productos",
+        "account_label": "Mi cuenta",
+        "menu_color_scheme": "scheme-1"
+      }
+    }
+  },
+  "order": [
+    "announcement",
+    "header"
+  ]
+}

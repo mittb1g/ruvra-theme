@@ -1,0 +1,1787 @@
+/* ruvra — tokens del sistema visual (ruvra-handoff/README.md) */
+
+/* @font-face de Geist: en layout/theme.liquid (necesita asset_url para coincidir con el preload) */
+
+:root {
+  --ruvra-black: #000000;
+  --ruvra-white: #ffffff;
+  --ruvra-text: #111111;
+  --ruvra-surface: #f4f4f4;
+  --ruvra-border: #eaeaea;
+  --ruvra-border-strong: #d4d4d4;
+  --ruvra-text-muted: #4d4d4d;
+  --ruvra-text-subtle: #6b6b6b;
+  --ruvra-sale: #d92d20;
+  --ruvra-installments: #1a7f37;
+
+  --ruvra-font: 'Geist', system-ui, -apple-system, 'Segoe UI', sans-serif;
+
+  --ruvra-radius-card: 14px;
+  --ruvra-radius-banner: 20px;
+  --ruvra-radius-badge: 6px;
+  --ruvra-radius-pill: 999px;
+
+  --ruvra-button-height: 54px;
+  --ruvra-button-height-sm: 48px;
+}
+
+/* ---------- Base: tipografía Geist sobre Dawn (1rem = 10px) ---------- */
+:root {
+  --font-body-family: var(--ruvra-font);
+  --font-heading-family: var(--ruvra-font);
+  --font-body-weight: 400;
+  --font-body-weight-bold: 700;
+  --font-heading-weight: 700;
+}
+
+body {
+  font-family: var(--ruvra-font);
+  color: var(--ruvra-text);
+  letter-spacing: 0;
+}
+
+.ruvra-container {
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 144rem;
+  margin-inline: auto;
+  padding-inline: 1.6rem;
+}
+
+@media screen and (min-width: 990px) {
+  .ruvra-container {
+    padding-inline: 4.8rem;
+  }
+}
+
+.ruvra-logo {
+  display: block;
+  flex-shrink: 0;
+}
+
+/* ---------- Barra de anuncios ---------- */
+.ruvra-ann {
+  background: var(--ruvra-black);
+  color: var(--ruvra-white);
+}
+
+.ruvra-ann__inner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  min-height: 3.6rem;
+  padding: 0.6rem 1.6rem;
+  box-sizing: border-box;
+  font-size: 1.2rem;
+  font-weight: 500;
+  line-height: 1.3;
+  text-align: center;
+}
+
+.ruvra-ann__item {
+  color: inherit;
+  text-decoration: none;
+}
+
+.ruvra-ann__sep::before {
+  content: '·';
+}
+
+.ruvra-ann__text--desktop {
+  display: none;
+}
+
+@media screen and (min-width: 750px) {
+  .ruvra-ann__inner {
+    gap: 3.2rem;
+    min-height: 4rem;
+    font-size: 1.3rem;
+  }
+
+  .ruvra-ann__sep::before {
+    content: '';
+    display: block;
+    width: 4px;
+    height: 4px;
+    background: currentColor;
+  }
+
+  .ruvra-ann__text--desktop {
+    display: inline;
+  }
+
+  .ruvra-ann__text--mobile {
+    display: none;
+  }
+}
+
+/* ---------- Header ---------- */
+.ruvra-header {
+  background: var(--ruvra-white);
+  color: var(--ruvra-black);
+}
+
+.ruvra-header__bar {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  grid-template-areas:
+    'drawer logo actions'
+    'search search search';
+  align-items: center;
+  padding-inline: 0.8rem;
+}
+
+.ruvra-header__drawer {
+  grid-area: drawer;
+  justify-self: start;
+  display: flex;
+  align-items: center;
+  height: 6rem;
+}
+
+.ruvra-header__drawer .header__icon--menu {
+  width: 4.4rem;
+  height: 4.4rem;
+  color: var(--ruvra-black);
+}
+
+.ruvra-header__drawer .header__icon--menu .icon {
+  width: 2.4rem;
+  height: 2.4rem;
+}
+
+.ruvra-header__logo {
+  grid-area: logo;
+  justify-self: center;
+  display: flex;
+  color: var(--ruvra-black);
+  text-decoration: none;
+}
+
+.ruvra-header__logo-desktop {
+  display: none;
+}
+
+.ruvra-header__search {
+  grid-area: search;
+  padding: 0.4rem 0.8rem 1.2rem;
+}
+
+.ruvra-search {
+  position: relative;
+  display: block;
+}
+
+.ruvra-search__form {
+  position: relative;
+}
+
+.ruvra-search__field {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  height: 4.4rem;
+  box-sizing: border-box;
+  padding: 0 1.6rem;
+  border: 1px solid var(--ruvra-border-strong);
+  border-radius: var(--ruvra-radius-pill);
+  background: var(--ruvra-white);
+  color: var(--ruvra-text-subtle);
+  cursor: text;
+}
+
+.ruvra-search__field:focus-within {
+  border-color: var(--ruvra-black);
+}
+
+.ruvra-search__input {
+  flex-grow: 1;
+  min-width: 0;
+  height: 100%;
+  border: 0;
+  outline: none;
+  background: transparent;
+  font-family: var(--ruvra-font);
+  font-size: 1.5rem;
+  color: var(--ruvra-text);
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.ruvra-search__input:focus,
+.ruvra-search__input:focus-visible {
+  outline: none;
+  box-shadow: none;
+}
+
+.ruvra-search__field:has(.ruvra-search__input:focus-visible) {
+  outline: 2px solid var(--ruvra-black);
+  outline-offset: 2px;
+}
+
+.ruvra-search__input::placeholder {
+  color: var(--ruvra-text-subtle);
+  opacity: 1;
+}
+
+.ruvra-search__input::-webkit-search-cancel-button {
+  display: none;
+}
+
+.ruvra-search__reset {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 3.2rem;
+  height: 3.2rem;
+  margin-right: -0.8rem;
+  border: 0;
+  background: transparent;
+  color: var(--ruvra-text-subtle);
+  cursor: pointer;
+}
+
+.ruvra-search__reset.hidden {
+  display: none;
+}
+
+.ruvra-search .predictive-search {
+  top: calc(100% + 0.8rem);
+  left: 0;
+  right: 0;
+  width: auto;
+  border: 1px solid var(--ruvra-border);
+  border-radius: 1.6rem;
+  box-shadow: 0 1.2rem 3.2rem rgba(0, 0, 0, 0.08);
+}
+
+.ruvra-header__actions {
+  grid-area: actions;
+  justify-self: end;
+  display: flex;
+  align-items: center;
+}
+
+.ruvra-header__action {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.8rem;
+  min-width: 4.4rem;
+  height: 4.4rem;
+  color: var(--ruvra-black);
+  font-size: 1.4rem;
+  font-weight: 500;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+shopify-account.ruvra-header__account {
+  --shopify-account-font-heading: var(--ruvra-font);
+  --shopify-account-font-heading-weight: 700;
+  --shopify-account-font-body: var(--ruvra-font);
+  --shopify-account-font-body-weight: 400;
+  --shopify-account-radius-base: 1.6rem;
+  --shopify-account-radius-button: 99px;
+  --shopify-account-radius-button-small: 99px;
+  --shopify-account-radius-input: 99px;
+  --shopify-account-color-background: #ffffff;
+  --shopify-account-color-text: #111111;
+  --shopify-account-color-accent: #000000;
+  --shopify-account-color-accent-text: #ffffff;
+  --shopify-account-dialog-position-top: var(--header-height, 0px);
+}
+
+.ruvra-header__account-inner {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  color: var(--ruvra-black);
+  font: 500 1.4rem/1 var(--ruvra-font);
+}
+
+.ruvra-header__label {
+  display: none;
+}
+
+.ruvra-cart-count {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.4rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 1.8rem;
+  height: 1.8rem;
+  padding: 0 0.4rem;
+  box-sizing: border-box;
+  border-radius: var(--ruvra-radius-pill);
+  background: var(--ruvra-black);
+  color: var(--ruvra-white);
+  font-size: 1.1rem;
+  font-weight: 600;
+  line-height: 1;
+}
+
+/* Menú lateral de celular (header-drawer de Dawn): estilos que Dawn define inline en su header */
+.ruvra-header .list-menu {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.ruvra-header .list-menu__item {
+  display: flex;
+  align-items: center;
+  line-height: 1.3;
+}
+
+.ruvra-header .menu-drawer__menu-item {
+  padding: 1.2rem 1.6rem;
+  color: var(--ruvra-black);
+  font-size: 1.8rem;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+
+.ruvra-header .menu-drawer__menu-item--active,
+.ruvra-header .menu-drawer__menu-item:hover {
+  background: var(--ruvra-surface);
+}
+
+/* Nav: barra de links en desktop, chips en celular */
+.ruvra-nav--desktop {
+  display: none;
+}
+
+.ruvra-nav__chips {
+  display: flex;
+  gap: 0.8rem;
+  margin: 0;
+  padding: 0 1.6rem 1.4rem;
+  list-style: none;
+  overflow-x: auto;
+  scrollbar-width: none;
+  white-space: nowrap;
+  border-bottom: 1px solid var(--ruvra-border);
+}
+
+.ruvra-nav__chips::-webkit-scrollbar {
+  display: none;
+}
+
+.ruvra-chip {
+  display: inline-flex;
+  align-items: center;
+  padding: 1rem 1.6rem;
+  border: 1px solid var(--ruvra-border-strong);
+  border-radius: var(--ruvra-radius-pill);
+  color: var(--ruvra-black);
+  font-size: 1.4rem;
+  font-weight: 500;
+  line-height: 1.2;
+  text-decoration: none;
+}
+
+/* Fila de confianza (celular): estrellas + logos de pago en tarjetitas blancas */
+.ruvra-trust {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.8rem;
+  padding: 0.2rem 1.6rem 1.4rem;
+  border-bottom: 1px solid var(--ruvra-border);
+}
+
+.ruvra-trust__reviews {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-width: 0;
+  color: var(--ruvra-text-muted);
+  font-size: 1.2rem;
+  font-weight: 500;
+  white-space: nowrap;
+  text-decoration: none;
+}
+
+.ruvra-stars {
+  display: inline-flex;
+  flex-shrink: 0;
+  gap: 1px;
+  color: #f5a623;
+}
+
+.ruvra-stars svg {
+  display: block;
+}
+
+.ruvra-trust__word {
+  display: none;
+}
+
+.ruvra-trust__pay {
+  display: flex;
+  flex-shrink: 0;
+  gap: 0.4rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.ruvra-pay-tile {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 4.2rem;
+  height: 2.8rem;
+  box-sizing: border-box;
+  border: 1px solid #e3e3e3;
+  border-radius: 0.7rem;
+  background: var(--ruvra-white);
+}
+
+.ruvra-pay-tile svg {
+  display: block;
+  width: 4rem;
+  height: 2.6rem;
+}
+
+/* Sacamos el fondo de tarjeta de los íconos de Shopify y dejamos solo el logo sobre blanco */
+.ruvra-pay-tile svg > rect,
+.ruvra-pay-tile path[d^='M35 0H3'],
+.ruvra-pay-tile path[d^='M35 1C'],
+.ruvra-pay-tile path[d^='M35 1c'],
+.ruvra-pay-tile path[d^='M3 0.5H35'] {
+  display: none;
+}
+
+.ruvra-pay-tile svg[aria-labelledby='pi-visa'] path[fill='white'] {
+  fill: #1434cb !important;
+}
+
+.ruvra-pay-tile svg[aria-labelledby='pi-american_express'] path[fill='white'] {
+  fill: #0071ce !important;
+  /* en el ícono de Shopify el logo está corrido a la derecha: lo centramos y achicamos */
+  transform-box: view-box;
+  transform-origin: 26.5px 12.15px;
+  transform: translateX(-7.5px) scale(0.82);
+}
+
+@media screen and (min-width: 380px) {
+  .ruvra-trust__word {
+    display: inline;
+  }
+}
+
+@media screen and (min-width: 430px) {
+  .ruvra-pay-tile {
+    width: 4.8rem;
+    height: 3.2rem;
+  }
+
+  .ruvra-pay-tile svg {
+    width: 4.4rem;
+    height: 2.8rem;
+  }
+}
+
+.ruvra-chip.is-highlight {
+  font-weight: 700;
+}
+
+.ruvra-chip.is-active {
+  border-color: var(--ruvra-black);
+  background: var(--ruvra-black);
+  color: var(--ruvra-white);
+  font-weight: 600;
+}
+
+@media screen and (min-width: 990px) {
+  .ruvra-header__bar {
+    grid-template-columns: auto minmax(0, 56rem) auto;
+    grid-template-areas: 'logo search actions';
+    justify-content: space-between;
+    column-gap: 4rem;
+    height: 8.4rem;
+    padding-inline: 4.8rem;
+  }
+
+  .ruvra-header__drawer,
+  .ruvra-header__logo-mobile,
+  .ruvra-nav--chips {
+    display: none;
+  }
+
+  .ruvra-header__logo {
+    justify-self: start;
+  }
+
+  .ruvra-header__logo-desktop {
+    display: block;
+  }
+
+  .ruvra-header__search {
+    padding: 0;
+  }
+
+  .ruvra-search__field {
+    height: 4.6rem;
+    padding: 0 1.8rem;
+  }
+
+  .ruvra-header__actions {
+    gap: 0.8rem;
+  }
+
+  .ruvra-header__action {
+    padding: 1rem 1.2rem;
+  }
+
+  .ruvra-header__label {
+    display: inline;
+  }
+
+  .ruvra-cart-count {
+    position: static;
+    min-width: 2.2rem;
+    height: 2.2rem;
+    font-size: 1.2rem;
+  }
+
+  .ruvra-nav--desktop {
+    display: block;
+    border-top: 1px solid var(--ruvra-border);
+    border-bottom: 1px solid var(--ruvra-border);
+  }
+
+  .ruvra-nav__list {
+    display: flex;
+    align-items: center;
+    gap: 3.6rem;
+    height: 4.8rem;
+    margin: 0 auto;
+    list-style: none;
+  }
+
+  .ruvra-nav__link {
+    color: var(--ruvra-black);
+    font-size: 1.5rem;
+    font-weight: 500;
+    text-decoration: none;
+  }
+
+  .ruvra-nav__link:hover {
+    text-decoration: underline;
+    text-underline-offset: 0.6rem;
+  }
+
+  .ruvra-nav__link.is-highlight {
+    font-weight: 700;
+  }
+}
+
+/* ---------- Botones y etiquetas ---------- */
+.ruvra-btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  height: 5.2rem;
+  padding: 0 3.2rem;
+  border: 0;
+  border-radius: var(--ruvra-radius-pill);
+  background: var(--ruvra-black);
+  color: var(--ruvra-white);
+  font: 600 1.6rem/1 var(--ruvra-font);
+  text-decoration: none;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: opacity 0.15s ease;
+}
+
+.ruvra-btn:hover {
+  opacity: 0.85;
+}
+
+.ruvra-btn:focus-visible {
+  outline: 2px solid var(--ruvra-black);
+  outline-offset: 3px;
+}
+
+.ruvra-btn--outline {
+  border: 1.5px solid var(--ruvra-black);
+  background: transparent;
+  color: var(--ruvra-black);
+}
+
+.ruvra-btn--inverse {
+  background: var(--ruvra-white);
+  color: var(--ruvra-black);
+}
+
+.ruvra-btn--inverse:focus-visible {
+  outline-color: var(--ruvra-white);
+}
+
+.ruvra-btn--sm {
+  width: 100%;
+  height: 4.4rem;
+  padding: 0 1.2rem;
+  font-size: 1.4rem;
+}
+
+.ruvra-btn[disabled],
+.ruvra-btn[aria-disabled='true'] {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.ruvra-btn.loading > :not(.loading__spinner) {
+  visibility: hidden;
+}
+
+.ruvra-btn .loading__spinner {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: auto;
+}
+
+.ruvra-btn .loading__spinner.hidden {
+  display: none;
+}
+
+.ruvra-btn .spinner {
+  width: 1.8rem;
+  height: 1.8rem;
+}
+
+.ruvra-btn .path {
+  stroke: currentColor;
+}
+
+.ruvra-badge {
+  align-self: flex-start;
+  display: inline-block;
+  padding: 0.5rem 1rem;
+  border-radius: var(--ruvra-radius-badge);
+  background: var(--ruvra-black);
+  color: var(--ruvra-white);
+  font: 600 1.2rem/1.2 var(--ruvra-font);
+  letter-spacing: 0.04em;
+}
+
+.ruvra-badge--lg {
+  padding: 0.5rem 1rem;
+  font-size: 1.1rem;
+}
+
+.ruvra-badge--sale {
+  background: var(--ruvra-sale);
+}
+
+.ruvra-badge--inverse {
+  background: var(--ruvra-white);
+  color: var(--ruvra-black);
+}
+
+.ruvra-placeholder {
+  background: var(--ruvra-surface);
+  fill: #bdbdbd;
+}
+
+/* ---------- Espaciado de secciones y títulos ---------- */
+.ruvra-block {
+  margin-top: 4rem;
+}
+
+.ruvra-section-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1.6rem;
+  margin-bottom: 1.6rem;
+}
+
+.ruvra-section-head__title {
+  margin: 0;
+  color: var(--ruvra-text);
+  font: 700 2.4rem/1.15 var(--ruvra-font);
+  letter-spacing: -0.04em;
+}
+
+.ruvra-section-head__link {
+  color: var(--ruvra-text);
+  font-size: 1.4rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+/* ---------- Hero ---------- */
+.ruvra-hero {
+  display: block;
+  padding-top: 1.6rem;
+}
+
+.ruvra-hero__track {
+  position: relative;
+  display: flex;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+  border-radius: 1.8rem;
+  background: var(--ruvra-surface);
+}
+
+.ruvra-hero__track::-webkit-scrollbar {
+  display: none;
+}
+
+.ruvra-hero__slide {
+  flex: 0 0 100%;
+  scroll-snap-stop: always;
+  display: flex;
+  flex-direction: column;
+  scroll-snap-align: start;
+  background: var(--ruvra-surface);
+}
+
+.ruvra-hero__media {
+  height: 30rem;
+  overflow: hidden;
+}
+
+.ruvra-hero__img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.ruvra-hero__content {
+  display: flex;
+  flex-direction: column;
+  gap: 1.4rem;
+  padding: 2.4rem 2rem;
+}
+
+.ruvra-hero__heading {
+  margin: 0;
+  color: var(--ruvra-text);
+  font: 700 4rem/1.02 var(--ruvra-font);
+  letter-spacing: -0.05em;
+}
+
+.ruvra-hero__text {
+  margin: 0;
+  color: var(--ruvra-text-muted);
+  font-size: 1.6rem;
+  line-height: 1.5;
+}
+
+.ruvra-hero__text--desktop {
+  display: none;
+}
+
+.ruvra-hero__buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-top: 0.4rem;
+}
+
+.ruvra-hero__dots {
+  display: flex;
+  justify-content: center;
+  gap: 0.8rem;
+  margin-top: 0.6rem;
+}
+
+.ruvra-hero__dot {
+  width: 6px;
+  height: 6px;
+  padding: 0;
+  border: 0;
+  border-radius: 3px;
+  background: #bdbdbd;
+  cursor: pointer;
+  transition: width 0.2s ease, background-color 0.2s ease;
+}
+
+.ruvra-hero__dot[aria-current='true'] {
+  width: 24px;
+  background: var(--ruvra-black);
+}
+
+/* Hero compacto en celular: texto sobre la imagen con degradé */
+@media screen and (max-width: 989px) {
+  .ruvra-hero--m-overlay .ruvra-hero__slide {
+    position: relative;
+    aspect-ratio: 4 / 5;
+  }
+
+  .ruvra-hero--m-overlay.ruvra-hero--r-square .ruvra-hero__slide {
+    aspect-ratio: 1 / 1;
+  }
+
+  .ruvra-hero--m-overlay .ruvra-hero__media {
+    position: absolute;
+    inset: 0;
+    height: 100%;
+  }
+
+  .ruvra-hero--m-overlay .ruvra-hero__media::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(0, 0, 0, 0) 38%, rgba(0, 0, 0, 0.72) 100%);
+    pointer-events: none;
+  }
+
+  .ruvra-hero--m-overlay .ruvra-hero__media {
+    position: absolute;
+  }
+
+  .ruvra-hero--m-overlay .ruvra-hero__content {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 1;
+    gap: 0.8rem;
+    padding: 2rem 2rem 1.8rem;
+  }
+
+  .ruvra-hero--m-overlay .ruvra-badge {
+    background: var(--ruvra-white);
+    color: var(--ruvra-black);
+  }
+
+  .ruvra-hero--m-overlay .ruvra-hero__heading {
+    color: var(--ruvra-white);
+    font-size: 3.2rem;
+  }
+
+  .ruvra-hero--m-overlay .ruvra-hero__text {
+    color: rgba(255, 255, 255, 0.85);
+    font-size: 1.4rem;
+    line-height: 1.4;
+  }
+
+  .ruvra-hero--m-overlay .ruvra-hero__buttons {
+    flex-direction: row;
+    margin-top: 0.4rem;
+  }
+
+  .ruvra-hero--m-overlay .ruvra-hero__buttons .ruvra-btn {
+    height: 4.6rem;
+    padding: 0 2.4rem;
+    background: var(--ruvra-white);
+    color: var(--ruvra-black);
+    font-size: 1.5rem;
+  }
+
+  .ruvra-hero--m-overlay .ruvra-hero__buttons .ruvra-btn--outline {
+    display: none;
+  }
+
+  .ruvra-hero--m-overlay .ruvra-hero__dots {
+    position: absolute;
+    right: 2rem;
+    bottom: 3.2rem;
+    margin: 0;
+  }
+
+  .ruvra-hero--m-overlay .ruvra-hero__dot {
+    background: rgba(255, 255, 255, 0.5);
+  }
+
+  .ruvra-hero--m-overlay .ruvra-hero__dot[aria-current='true'] {
+    background: var(--ruvra-white);
+  }
+}
+
+/* ---------- Beneficios ---------- */
+.ruvra-benefits {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  margin: 2rem 0 0;
+  padding: 0;
+  list-style: none;
+  border: 1px solid var(--ruvra-border);
+  border-radius: var(--ruvra-radius-card);
+}
+
+.ruvra-benefits__item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+  padding: 1.6rem;
+  color: var(--ruvra-black);
+}
+
+.ruvra-benefits__item:nth-child(odd) {
+  border-right: 1px solid var(--ruvra-border);
+}
+
+.ruvra-benefits__item:nth-child(-n + 2) {
+  border-bottom: 1px solid var(--ruvra-border);
+}
+
+.ruvra-benefits__item .ruvra-icon {
+  width: 2.4rem;
+  height: 2.4rem;
+  flex-shrink: 0;
+}
+
+.ruvra-benefits__title {
+  margin: 0;
+  color: var(--ruvra-text);
+  font-size: 1.4rem;
+  font-weight: 600;
+  line-height: 1.3;
+}
+
+.ruvra-benefits__text {
+  margin: 0.3rem 0 0;
+  color: var(--ruvra-text-subtle);
+  font-size: 1.2rem;
+  line-height: 1.3;
+}
+
+/* ---------- Categorías ---------- */
+.ruvra-categories {
+  display: flex;
+  gap: 1.2rem;
+  margin: 0;
+  padding: 0 1.6rem;
+  list-style: none;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scroll-padding-left: 1.6rem;
+  scrollbar-width: none;
+}
+
+.ruvra-categories::-webkit-scrollbar {
+  display: none;
+}
+
+.ruvra-categories__item {
+  flex: 0 0 24rem;
+  scroll-snap-align: start;
+}
+
+.ruvra-category {
+  position: relative;
+  display: block;
+  height: 20rem;
+  overflow: hidden;
+  border-radius: var(--ruvra-radius-card);
+  text-decoration: none;
+}
+
+.ruvra-category--gray {
+  background: var(--ruvra-surface);
+}
+
+.ruvra-category__img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.4s ease;
+}
+
+.ruvra-category--gray .ruvra-category__img {
+  mix-blend-mode: multiply;
+}
+
+.ruvra-category:hover .ruvra-category__img {
+  transform: scale(1.03);
+}
+
+.ruvra-category__label {
+  position: absolute;
+  left: 1.2rem;
+  bottom: 1.2rem;
+  padding: 1rem 1.6rem;
+  border-radius: var(--ruvra-radius-pill);
+  background: var(--ruvra-white);
+  color: var(--ruvra-black);
+  font-size: 1.4rem;
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+.ruvra-category__label--dark {
+  background: var(--ruvra-black);
+  color: var(--ruvra-white);
+}
+
+/* ---------- Tarjeta de producto y grilla ---------- */
+.ruvra-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  column-gap: 1.2rem;
+  row-gap: 2.8rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.ruvra-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+  height: 100%;
+}
+
+.ruvra-card__media {
+  position: relative;
+  aspect-ratio: 1 / 1;
+  overflow: hidden;
+  border-radius: 1.2rem;
+  background: var(--ruvra-surface);
+}
+
+.ruvra-card__media-link {
+  display: block;
+  height: 100%;
+}
+
+.ruvra-card__media--split .ruvra-card__media-link {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.ruvra-card__img,
+.ruvra-card__placeholder {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  mix-blend-mode: multiply;
+  transition: transform 0.4s ease;
+}
+
+.ruvra-card:hover .ruvra-card__img {
+  transform: scale(1.03);
+}
+
+.ruvra-card__media .ruvra-badge {
+  position: absolute;
+  top: 1.2rem;
+  left: 1.2rem;
+  letter-spacing: 0;
+}
+
+.ruvra-card__fav {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 4.4rem;
+  height: 4.4rem;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: var(--ruvra-white);
+  color: var(--ruvra-black);
+  cursor: pointer;
+}
+
+.ruvra-card__fav[aria-pressed='true'] .ruvra-icon {
+  fill: currentColor;
+}
+
+.ruvra-card__title {
+  height: 3.6rem;
+  margin: 0;
+  overflow: hidden;
+  color: var(--ruvra-text);
+  font: 500 1.4rem/1.3 var(--ruvra-font);
+  letter-spacing: 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
+.ruvra-card__title a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.ruvra-card__title a:hover {
+  text-decoration: underline;
+}
+
+.ruvra-price {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  column-gap: 0.6rem;
+}
+
+.ruvra-price__current {
+  color: var(--ruvra-text);
+  font-size: 1.8rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.ruvra-price__compare {
+  color: var(--ruvra-text-subtle);
+  font-size: 1.2rem;
+}
+
+.ruvra-installments {
+  margin: 0;
+  color: var(--ruvra-installments);
+  font-size: 1.2rem;
+  font-weight: 500;
+  line-height: 1.3;
+}
+
+.ruvra-installments__long {
+  display: none;
+}
+
+.ruvra-card__form,
+.ruvra-card > .ruvra-card__add {
+  margin-top: auto;
+}
+
+.ruvra-card__add-long {
+  display: none;
+}
+
+.ruvra-card .product-form__error-message-wrapper:not([hidden]) {
+  margin-top: 0.6rem;
+  color: var(--ruvra-sale);
+  font-size: 1.2rem;
+}
+
+/* Grilla en una fila deslizable (celular y tablet) */
+@media screen and (max-width: 989px) {
+  .ruvra-grid--scroll {
+    display: flex;
+    gap: 1.2rem;
+    margin-inline: -1.6rem;
+    padding: 0 1.6rem 0.4rem;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-padding-inline: 1.6rem;
+    scrollbar-width: none;
+  }
+
+  .ruvra-grid--scroll::-webkit-scrollbar {
+    display: none;
+  }
+
+  .ruvra-grid--scroll > li {
+    flex: 0 0 calc((100% - 2.4rem) / 2.25);
+    scroll-snap-align: start;
+  }
+}
+
+@media screen and (min-width: 750px) and (max-width: 989px) {
+  .ruvra-grid--scroll > li {
+    flex-basis: calc((100% - 3.6rem) / 3.3);
+  }
+}
+
+/* ---------- Banner promo ---------- */
+.ruvra-promo {
+  display: flex;
+  flex-direction: column-reverse;
+  overflow: hidden;
+  border-radius: 1.8rem;
+  background: var(--ruvra-black);
+  color: var(--ruvra-white);
+}
+
+.ruvra-promo__media {
+  height: 22rem;
+  overflow: hidden;
+  background: var(--ruvra-white);
+}
+
+.ruvra-promo__img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 45%;
+}
+
+.ruvra-promo__content {
+  display: flex;
+  flex-direction: column;
+  gap: 1.4rem;
+  padding: 2.4rem 2rem 2.6rem;
+}
+
+.ruvra-promo__heading {
+  margin: 0;
+  color: var(--ruvra-white);
+  font: 700 3.4rem/1.02 var(--ruvra-font);
+  letter-spacing: -0.05em;
+}
+
+.ruvra-promo__text {
+  margin: 0;
+  color: #bdbdbd;
+  font-size: 1.5rem;
+  line-height: 1.5;
+}
+
+.ruvra-promo .ruvra-btn {
+  margin-top: 0.4rem;
+}
+
+/* ---------- Newsletter ---------- */
+.ruvra-newsletter {
+  display: flex;
+  flex-direction: column;
+  gap: 1.4rem;
+  padding: 2.8rem 2rem;
+  border-radius: 1.8rem;
+  background: var(--ruvra-surface);
+}
+
+.ruvra-newsletter__heading {
+  margin: 0;
+  color: var(--ruvra-text);
+  font: 700 2.4rem/1.2 var(--ruvra-font);
+  letter-spacing: -0.04em;
+}
+
+.ruvra-newsletter__text {
+  margin: 1.4rem 0 0;
+  color: var(--ruvra-text-muted);
+  font-size: 1.5rem;
+  line-height: 1.5;
+}
+
+.ruvra-newsletter__form {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.ruvra-input {
+  box-sizing: border-box;
+  height: 5.2rem;
+  padding: 0 2rem;
+  border: 1px solid var(--ruvra-border-strong);
+  border-radius: var(--ruvra-radius-pill);
+  background: var(--ruvra-white);
+  color: var(--ruvra-text);
+  font: 400 1.5rem var(--ruvra-font);
+  outline: none;
+}
+
+.ruvra-input:focus {
+  border-color: var(--ruvra-black);
+}
+
+.ruvra-newsletter__msg {
+  flex-basis: 100%;
+  margin: 0;
+  font-size: 1.4rem;
+  font-weight: 500;
+}
+
+.ruvra-newsletter__msg--error {
+  color: var(--ruvra-sale);
+}
+
+/* ---------- Footer ---------- */
+.ruvra-footer {
+  margin-top: 4rem;
+  padding: 3.6rem 0 2.8rem;
+  background: var(--ruvra-black);
+  color: var(--ruvra-white);
+}
+
+.ruvra-footer a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.ruvra-footer__top {
+  display: flex;
+  flex-direction: column;
+  gap: 2.4rem;
+}
+
+.ruvra-footer__brand {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 1rem;
+}
+
+.ruvra-footer__tagline {
+  margin: 0;
+  color: #a8a8a8;
+  font-size: 1.4rem;
+  line-height: 1.5;
+}
+
+.ruvra-footer__col {
+  display: none;
+}
+
+.ruvra-footer__accordions {
+  border-top: 1px solid #262626;
+}
+
+.ruvra-footer__acc {
+  border-bottom: 1px solid #262626;
+}
+
+.ruvra-footer__acc-summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 5.6rem;
+  font-size: 1.5rem;
+  font-weight: 600;
+  list-style: none;
+  cursor: pointer;
+}
+
+.ruvra-footer__acc-summary::-webkit-details-marker {
+  display: none;
+}
+
+.ruvra-footer__acc-icon::before {
+  content: '+';
+  font-size: 2rem;
+  font-weight: 400;
+}
+
+.ruvra-footer__acc[open] .ruvra-footer__acc-icon::before {
+  content: '−';
+}
+
+.ruvra-footer__acc-body {
+  padding-bottom: 1.8rem;
+}
+
+.ruvra-footer__title {
+  margin: 0;
+  font-size: 1.4rem;
+  font-weight: 600;
+}
+
+.ruvra-footer__list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: 1.4rem;
+}
+
+.ruvra-footer__list a {
+  color: #bdbdbd;
+}
+
+.ruvra-footer__list a:hover {
+  color: var(--ruvra-white);
+}
+
+.ruvra-footer__chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.8rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.ruvra-footer__chip {
+  padding: 0.6rem 1rem;
+  border: 1px solid #3a3a3a;
+  border-radius: var(--ruvra-radius-badge);
+  color: #bdbdbd;
+  font-size: 1.2rem;
+}
+
+.ruvra-footer__payment-icons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  margin: 1.2rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.ruvra-footer__bottom {
+  display: flex;
+  flex-direction: column-reverse;
+  gap: 2.4rem;
+  margin-top: 2.4rem;
+}
+
+.ruvra-footer__copy {
+  margin: 0;
+  color: #8f8f8f;
+  font-size: 1.2rem;
+}
+
+.ruvra-footer__links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 2rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: 1.4rem;
+}
+
+.ruvra-footer__links a {
+  display: inline-block;
+  padding: 1rem 0;
+}
+
+/* ---------- Tablet ---------- */
+@media screen and (min-width: 750px) {
+  .ruvra-block {
+    margin-top: 7.2rem;
+  }
+
+  .ruvra-section-head {
+    margin-bottom: 2.8rem;
+  }
+
+  .ruvra-section-head__title {
+    font-size: 3.6rem;
+  }
+
+  .ruvra-section-head__link {
+    font-size: 1.5rem;
+  }
+
+  .ruvra-benefits {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    min-height: 10.4rem;
+    border-radius: 1.6rem;
+  }
+
+  .ruvra-benefits__item {
+    flex-direction: row;
+    align-items: center;
+    gap: 1.6rem;
+    padding: 0 2.8rem;
+    border-bottom: 0 !important;
+    border-right: 1px solid var(--ruvra-border);
+  }
+
+  .ruvra-benefits__item:last-child {
+    border-right: 0;
+  }
+
+  .ruvra-benefits__item .ruvra-icon {
+    width: 3rem;
+    height: 3rem;
+  }
+
+  .ruvra-benefits__title {
+    font-size: 1.5rem;
+  }
+
+  .ruvra-benefits__text {
+    font-size: 1.3rem;
+  }
+
+  .ruvra-categories {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 2.4rem;
+    box-sizing: border-box;
+    max-width: 144rem;
+    margin-inline: auto;
+    overflow: visible;
+  }
+
+  .ruvra-category {
+    height: 32rem;
+    border-radius: 1.6rem;
+  }
+
+  .ruvra-category__label {
+    left: 2rem;
+    bottom: 2rem;
+    padding: 1.2rem 2rem;
+    font-size: 1.6rem;
+  }
+
+  .ruvra-newsletter {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 4.8rem;
+    min-height: 18rem;
+    box-sizing: border-box;
+    padding: 3.2rem 6.4rem;
+    border-radius: var(--ruvra-radius-banner);
+  }
+
+  .ruvra-newsletter__heading {
+    font-size: 3rem;
+  }
+
+  .ruvra-newsletter__text {
+    margin-top: 0.8rem;
+    font-size: 1.6rem;
+  }
+
+  .ruvra-newsletter__form {
+    flex-direction: row;
+    flex-shrink: 0;
+  }
+
+  .ruvra-newsletter__form .ruvra-input {
+    width: 32rem;
+    height: 5.4rem;
+    padding: 0 2.2rem;
+  }
+
+  .ruvra-newsletter__form .ruvra-btn {
+    height: 5.4rem;
+    padding: 0 2.8rem;
+    font-size: 1.5rem;
+  }
+}
+
+/* ---------- Desktop ---------- */
+@media screen and (min-width: 990px) {
+  .ruvra-hero {
+    padding-top: 2.4rem;
+  }
+
+  .ruvra-hero__track {
+    border-radius: var(--ruvra-radius-banner);
+  }
+
+  .ruvra-hero__slide {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-areas: 'content media';
+    height: 56rem;
+  }
+
+  .ruvra-hero__media {
+    grid-area: media;
+    height: 100%;
+  }
+
+  .ruvra-hero__content {
+    grid-area: content;
+    justify-content: center;
+    gap: 2.4rem;
+    padding: 6.4rem;
+  }
+
+  .ruvra-hero__content .ruvra-badge {
+    padding: 0.6rem 1.2rem;
+    font-size: 1.2rem;
+  }
+
+  .ruvra-hero__heading {
+    font-size: 6.8rem;
+    line-height: 1;
+  }
+
+  .ruvra-hero__text {
+    max-width: 46rem;
+    font-size: 1.9rem;
+  }
+
+  .ruvra-hero__text--desktop {
+    display: block;
+  }
+
+  .ruvra-hero__text--mobile {
+    display: none;
+  }
+
+  .ruvra-hero__buttons {
+    flex-direction: row;
+    gap: 1.2rem;
+    margin-top: 0.8rem;
+  }
+
+  .ruvra-btn {
+    height: 5.4rem;
+  }
+
+  .ruvra-hero__dots {
+    justify-content: flex-start;
+    margin-top: 2rem;
+  }
+
+  .ruvra-benefits {
+    margin-top: 0;
+  }
+
+  .ruvra-categories {
+    padding-inline: 4.8rem;
+  }
+
+  .ruvra-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 2.4rem;
+  }
+
+  .ruvra-card {
+    gap: 1.2rem;
+  }
+
+  .ruvra-card__media {
+    border-radius: var(--ruvra-radius-card);
+  }
+
+  .ruvra-card__title {
+    height: auto;
+    font-size: 1.6rem;
+    line-height: 1.35;
+    display: block;
+  }
+
+  .ruvra-price {
+    column-gap: 1rem;
+  }
+
+  .ruvra-price__current {
+    font-size: 2.2rem;
+  }
+
+  .ruvra-price__compare {
+    font-size: 1.5rem;
+  }
+
+  .ruvra-installments {
+    font-size: 1.3rem;
+  }
+
+  .ruvra-installments__long {
+    display: inline;
+  }
+
+  .ruvra-btn--sm {
+    height: 4.8rem;
+    margin-top: 0.4rem;
+    font-size: 1.5rem;
+  }
+
+  .ruvra-card__add-long {
+    display: inline;
+  }
+
+  .ruvra-card__add-short {
+    display: none;
+  }
+
+  .ruvra-promo {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    height: 42rem;
+    border-radius: var(--ruvra-radius-banner);
+  }
+
+  .ruvra-promo__media {
+    height: 100%;
+  }
+
+  .ruvra-promo__img {
+    object-position: 50% 50%;
+  }
+
+  .ruvra-promo__content {
+    justify-content: center;
+    gap: 2rem;
+    padding: 6.4rem;
+  }
+
+  .ruvra-promo__content .ruvra-badge {
+    padding: 0.6rem 1.2rem;
+    font-size: 1.2rem;
+  }
+
+  .ruvra-promo__heading {
+    font-size: 5.6rem;
+    line-height: 1;
+  }
+
+  .ruvra-promo__text {
+    max-width: 44rem;
+    font-size: 1.8rem;
+  }
+
+  .ruvra-promo .ruvra-btn {
+    align-self: flex-start;
+    margin-top: 0.8rem;
+  }
+
+  .ruvra-footer {
+    margin-top: 7.2rem;
+    padding: 6.4rem 0 3.6rem;
+  }
+
+  .ruvra-footer__top {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 3.2rem;
+  }
+
+  .ruvra-footer__brand {
+    gap: 1.4rem;
+  }
+
+  .ruvra-footer__tagline {
+    max-width: 24rem;
+  }
+
+  .ruvra-footer__col {
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+  }
+
+  .ruvra-footer__accordions {
+    display: none;
+  }
+
+  .ruvra-footer__bottom {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 8rem;
+    padding-top: 2.2rem;
+    border-top: 1px solid #262626;
+  }
+
+  .ruvra-footer__copy,
+  .ruvra-footer__links {
+    color: #8f8f8f;
+    font-size: 1.3rem;
+  }
+
+  .ruvra-footer__links a {
+    padding: 0;
+  }
+}

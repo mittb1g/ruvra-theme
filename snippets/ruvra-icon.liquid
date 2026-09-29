@@ -1,0 +1,52 @@
+{% comment %}
+  Íconos de línea del diseño de ruvra (viewBox 24, trazo currentColor).
+
+  Accepts:
+  - icon: {String} search | account | cart | heart | menu | close | truck | card | shield | refresh | arrow
+  - size: {Number} px. Default: 24
+  - stroke: {Number} grosor del trazo. Default: 1.8
+
+  Usage:
+  {% render 'ruvra-icon', icon: 'cart', size: 22 %}
+{% endcomment %}
+
+{%- assign icon_size = size | default: 24 -%}
+{%- assign icon_stroke = stroke | default: 1.8 -%}
+<svg
+  class="ruvra-icon ruvra-icon--{{ icon }}"
+  width="{{ icon_size }}"
+  height="{{ icon_size }}"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="{{ icon_stroke }}"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+  aria-hidden="true"
+  focusable="false"
+>
+  {%- case icon -%}
+    {%- when 'search' -%}
+      <circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/>
+    {%- when 'account' -%}
+      <circle cx="12" cy="8" r="4"/><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"/>
+    {%- when 'cart' -%}
+      <path d="M4 5h2l2 11h11l2-8H7"/><circle cx="10" cy="20" r="1.4"/><circle cx="18" cy="20" r="1.4"/>
+    {%- when 'heart' -%}
+      <path d="M12 20s-7-4.5-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.5-7 10-7 10z"/>
+    {%- when 'menu' -%}
+      <path d="M3 6h18M3 12h18M3 18h18"/>
+    {%- when 'close' -%}
+      <path d="M6 6l12 12M18 6L6 18"/>
+    {%- when 'truck' -%}
+      <path d="M2 6h12v10H2zM14 10h4l4 4v2h-8"/><circle cx="6" cy="18" r="2"/><circle cx="18" cy="18" r="2"/>
+    {%- when 'card' -%}
+      <rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20M6 15h4"/>
+    {%- when 'shield' -%}
+      <path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z"/><path d="M8.5 12l2.5 2.5 4.5-5"/>
+    {%- when 'refresh' -%}
+      <path d="M4 12a8 8 0 1 0 2.5-5.8M4 4v4h4"/>
+    {%- when 'arrow' -%}
+      <path d="M5 12h14M13 6l6 6-6 6"/>
+  {%- endcase -%}
+</svg>

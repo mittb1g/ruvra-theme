@@ -1,0 +1,281 @@
+{%- liquid
+  assign slide_count = section.blocks.size
+-%}
+
+<ruvra-slider class="ruvra-hero ruvra-container ruvra-hero--m-{{ section.settings.mobile_layout }} ruvra-hero--r-{{ section.settings.mobile_ratio }}" data-autoplay="{{ section.settings.autoplay }}" data-interval="{{ section.settings.interval | times: 1000 }}">
+  <div class="ruvra-hero__track" data-track>
+    {%- for block in section.blocks -%}
+      <div
+        class="ruvra-hero__slide"
+        id="Slide-{{ section.id }}-{{ forloop.index }}"
+        role="group"
+        aria-roledescription="slide"
+        aria-label="{{ forloop.index }} / {{ slide_count }}"
+        data-slide
+        {{ block.shopify_attributes }}
+      >
+        <div class="ruvra-hero__media">
+          {%- if block.settings.video != blank -%}
+            {{
+              block.settings.video
+              | video_tag:
+                autoplay: true,
+                loop: true,
+                muted: true,
+                playsinline: true,
+                controls: false,
+                preload: 'metadata',
+                image_size: '1200x',
+                class: 'ruvra-hero__img ruvra-hero__video'
+            }}
+          {%- elsif block.settings.image != blank -%}
+            {%- liquid
+              assign hero_loading = 'lazy'
+              if forloop.first and section.index == 1
+                assign hero_loading = 'eager'
+              endif
+            -%}
+            {{
+              block.settings.image
+              | image_url: width: 1600
+              | image_tag:
+                loading: hero_loading,
+                widths: '400, 600, 800, 1000, 1200, 1600',
+                sizes: '(min-width: 1440px) 672px, (min-width: 990px) 50vw, 100vw',
+                class: 'ruvra-hero__img',
+                alt: block.settings.image.alt
+            }}
+          {%- elsif block.settings.demo != 'none' -%}
+            {%- liquid
+              assign demo_loading = 'lazy'
+              if forloop.first
+                assign demo_loading = 'eager'
+              endif
+            -%}
+            {%- render 'ruvra-demo-image', demo: block.settings.demo, class: 'ruvra-hero__img', loading: demo_loading -%}
+          {%- else -%}
+            {{ 'hero-apparel-1' | placeholder_svg_tag: 'ruvra-hero__img ruvra-placeholder' }}
+          {%- endif -%}
+        </div>
+
+        <div class="ruvra-hero__content">
+          {%- if block.settings.badge != blank -%}
+            <span class="ruvra-badge ruvra-badge--lg">{{ block.settings.badge | escape }}</span>
+          {%- endif -%}
+          {%- if block.settings.heading != blank -%}
+            {%- if forloop.first -%}
+              <h1 class="ruvra-hero__heading">{{ block.settings.heading | escape }}</h1>
+            {%- else -%}
+              <h2 class="ruvra-hero__heading">{{ block.settings.heading | escape }}</h2>
+            {%- endif -%}
+          {%- endif -%}
+          {%- if block.settings.text != blank -%}
+            {%- if block.settings.text_mobile != blank -%}
+              <p class="ruvra-hero__text ruvra-hero__text--desktop">{{ block.settings.text | escape }}</p>
+              <p class="ruvra-hero__text ruvra-hero__text--mobile">{{ block.settings.text_mobile | escape }}</p>
+            {%- else -%}
+              <p class="ruvra-hero__text">{{ block.settings.text | escape }}</p>
+            {%- endif -%}
+          {%- endif -%}
+          {%- if block.settings.button_label_1 != blank or block.settings.button_label_2 != blank -%}
+            <div class="ruvra-hero__buttons">
+              {%- if block.settings.button_label_1 != blank -%}
+                <a href="{{ block.settings.button_link_1 | default: routes.all_products_collection_url }}" class="ruvra-btn">
+                  {{- block.settings.button_label_1 | escape -}}
+                </a>
+              {%- endif -%}
+              {%- if block.settings.button_label_2 != blank -%}
+                <a href="{{ block.settings.button_link_2 | default: routes.all_products_collection_url }}" class="ruvra-btn ruvra-btn--outline">
+                  {{- block.settings.button_label_2 | escape -}}
+                </a>
+              {%- endif -%}
+            </div>
+          {%- endif -%}
+
+          {%- if slide_count > 1 -%}
+            <div class="ruvra-hero__dots" role="group" aria-label="{{ 'sections.slideshow.load_slide' | t }}">
+              {%- for dot in section.blocks -%}
+                <button
+                  type="button"
+                  class="ruvra-hero__dot"
+                  aria-label="{{ 'sections.slideshow.load_slide' | t }} {{ forloop.index }} {{ 'general.slider.of' | t }} {{ slide_count }}"
+                  aria-controls="Slide-{{ section.id }}-{{ forloop.index }}"
+                  data-dot="{{ forloop.index0 }}"
+                  {% if forloop.parentloop.index0 == forloop.index0 %}aria-current="true"{% endif %}
+                ></button>
+              {%- endfor -%}
+            </div>
+          {%- endif -%}
+        </div>
+      </div>
+    {%- endfor -%}
+  </div>
+</ruvra-slider>
+
+<script src="{{ 'ruvra-slider.js' | asset_url }}" defer="defer"></script>
+
+{% schema %}
+{
+  "name": "ruvra · Hero",
+  "tag": "section",
+  "class": "section-ruvra-hero",
+  "max_blocks": 5,
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "autoplay",
+      "label": "Pasar las slides solas",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "interval",
+      "label": "Segundos por slide",
+      "min": 3,
+      "max": 10,
+      "step": 1,
+      "unit": "s",
+      "default": 6
+    },
+    {
+      "type": "select",
+      "id": "mobile_layout",
+      "label": "Diseño en celular",
+      "options": [
+        {
+          "value": "overlay",
+          "label": "Compacto: texto sobre la imagen"
+        },
+        {
+          "value": "stacked",
+          "label": "Imagen arriba y texto abajo"
+        }
+      ],
+      "default": "overlay"
+    },
+    {
+      "type": "select",
+      "id": "mobile_ratio",
+      "label": "Alto en celular (compacto)",
+      "options": [
+        {
+          "value": "portrait",
+          "label": "Vertical 4:5"
+        },
+        {
+          "value": "square",
+          "label": "Cuadrado"
+        }
+      ],
+      "default": "portrait"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "slide",
+      "name": "Slide",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Imagen",
+          "info": "Ideal: cuadrada o 4:3, mínimo 1400 px de ancho."
+        },
+        {
+          "type": "video",
+          "id": "video",
+          "label": "Video (opcional)",
+          "info": "Si subís un video, se muestra en lugar de la imagen: sin sonido, en loop. Ideal: menos de 15 s y vertical u horizontal 4:5."
+        },
+        {
+          "type": "select",
+          "id": "demo",
+          "label": "Imagen de muestra",
+          "info": "Solo se ve mientras no subas una imagen arriba.",
+          "options": [
+            {
+              "value": "none",
+              "label": "Ninguna"
+            },
+            {
+              "value": "pad",
+              "label": "Pad de carga"
+            },
+            {
+              "value": "inflador",
+              "label": "Inflador"
+            },
+            {
+              "value": "soporte",
+              "label": "Soporte"
+            }
+          ],
+          "default": "none"
+        },
+        {
+          "type": "text",
+          "id": "badge",
+          "label": "Etiqueta",
+          "default": "NUEVO"
+        },
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Título",
+          "default": "Tu auto, mejor equipado."
+        },
+        {
+          "type": "textarea",
+          "id": "text",
+          "label": "Texto",
+          "default": "Pad de carga inalámbrica antideslizante. Apoyás el celular y listo: carga sin cables mientras manejás."
+        },
+        {
+          "type": "textarea",
+          "id": "text_mobile",
+          "label": "Texto en celular (opcional)",
+          "info": "Versión más corta. Si queda vacío, se usa el de arriba."
+        },
+        {
+          "type": "text",
+          "id": "button_label_1",
+          "label": "Botón principal",
+          "default": "Comprar ahora"
+        },
+        {
+          "type": "url",
+          "id": "button_link_1",
+          "label": "Link del botón principal"
+        },
+        {
+          "type": "text",
+          "id": "button_label_2",
+          "label": "Botón secundario",
+          "default": "Ver ofertas"
+        },
+        {
+          "type": "url",
+          "id": "button_link_2",
+          "label": "Link del botón secundario"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "ruvra · Hero",
+      "blocks": [
+        {
+          "type": "slide"
+        }
+      ]
+    }
+  ],
+  "disabled_on": {
+    "groups": [
+      "header",
+      "footer"
+    ]
+  }
+}
+{% endschema %}

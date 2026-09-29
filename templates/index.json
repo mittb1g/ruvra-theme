@@ -1,0 +1,172 @@
+{
+  "sections": {
+    "hero": {
+      "type": "ruvra-hero",
+      "blocks": {
+        "slide-1": {
+          "type": "slide",
+          "settings": {
+            "demo": "pad",
+            "badge": "NUEVO",
+            "heading": "Tu auto, mejor equipado.",
+            "text": "Pad de carga inalámbrica antideslizante. Apoyás el celular y listo: carga sin cables mientras manejás.",
+            "text_mobile": "Pad de carga inalámbrica antideslizante. Apoyás el celular y carga sin cables.",
+            "button_label_1": "Comprar ahora",
+            "button_link_1": "",
+            "button_label_2": "Ver ofertas",
+            "button_link_2": ""
+          }
+        },
+        "slide-2": {
+          "type": "slide",
+          "settings": {
+            "demo": "inflador",
+            "badge": "[ETIQUETA]",
+            "heading": "[Título slide 2]",
+            "text": "Inflador digital portátil a batería. [Texto]",
+            "button_label_1": "Comprar ahora",
+            "button_link_1": "",
+            "button_label_2": "",
+            "button_link_2": ""
+          }
+        },
+        "slide-3": {
+          "type": "slide",
+          "settings": {
+            "demo": "soporte",
+            "badge": "[ETIQUETA]",
+            "heading": "[Título slide 3]",
+            "text": "Soporte magnético articulado para celular. [Texto]",
+            "button_label_1": "Comprar ahora",
+            "button_link_1": "",
+            "button_label_2": "",
+            "button_link_2": ""
+          }
+        }
+      },
+      "block_order": [
+        "slide-1",
+        "slide-2",
+        "slide-3"
+      ],
+      "settings": {
+        "autoplay": true,
+        "interval": 6,
+        "mobile_layout": "overlay",
+        "mobile_ratio": "portrait"
+      }
+    },
+    "benefits": {
+      "type": "ruvra-benefits",
+      "blocks": {
+        "envios": {
+          "type": "benefit",
+          "settings": {
+            "icon": "truck",
+            "title": "Envíos a todo el país",
+            "text": "[condición de envío]"
+          }
+        },
+        "cuotas": {
+          "type": "benefit",
+          "settings": {
+            "icon": "card",
+            "title": "Cuotas sin interés",
+            "text": "[condición de pago]"
+          }
+        },
+        "protegida": {
+          "type": "benefit",
+          "settings": {
+            "icon": "shield",
+            "title": "Compra protegida",
+            "text": "Pago 100% seguro"
+          }
+        },
+        "cambios": {
+          "type": "benefit",
+          "settings": {
+            "icon": "refresh",
+            "title": "Cambios fáciles",
+            "text": "[plazo de cambio]"
+          }
+        }
+      },
+      "block_order": [
+        "envios",
+        "cuotas",
+        "protegida",
+        "cambios"
+      ],
+      "settings": {}
+    },
+    "categories": {
+      "type": "ruvra-categories",
+      "blocks": {
+        "carga": {
+          "type": "category",
+          "settings": {
+            "label": "Carga",
+            "label_style": "light",
+            "product_on_gray": false,
+            "demo": "pad"
+          }
+        },
+        "infladores": {
+          "type": "category",
+          "settings": {
+            "label": "Infladores",
+            "label_style": "dark",
+            "product_on_gray": true,
+            "demo": "inflador"
+          }
+        },
+        "soportes": {
+          "type": "category",
+          "settings": {
+            "label": "Soportes",
+            "label_style": "light",
+            "product_on_gray": false,
+            "demo": "soporte"
+          }
+        }
+      },
+      "block_order": [
+        "carga",
+        "infladores",
+        "soportes"
+      ],
+      "settings": {
+        "title": "Comprá por categoría",
+        "view_all_link": "/collections/all"
+      }
+    },
+    "best_sellers": {
+      "type": "ruvra-product-grid",
+      "settings": {
+        "title": "Nuestros productos",
+        "collection": "",
+        "products_to_show": 4,
+        "view_all_link": "/collections/all"
+      }
+    },
+    "promo": {
+      "type": "ruvra-promo-banner",
+      "settings": {
+        "demo": "inflador",
+        "badge": "AHORRÁ [X]%",
+        "heading": "Armá tu kit de ruta.",
+        "text": "Llevando 2 o más productos, pagás menos. Se aplica solo en el carrito.",
+        "button_label": "Ver combos",
+        "button_link": ""
+      }
+    }
+  },
+  "order": [
+    "hero",
+    "best_sellers",
+    "benefits",
+    "categories",
+    "promo"
+  ]
+}

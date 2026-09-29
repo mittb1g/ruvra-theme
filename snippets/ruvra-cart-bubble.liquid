@@ -1,0 +1,10 @@
+{% comment %}
+  Contenido del link al carrito del header. Lo usan ruvra-header y la sección
+  cart-icon-bubble (que el carrito lateral de Dawn re-renderiza al agregar productos).
+{% endcomment %}
+{%- render 'ruvra-icon', icon: 'cart', size: 22 -%}
+<span class="ruvra-header__label">{{ 'templates.cart.cart' | t }}</span>
+<span class="ruvra-cart-count" aria-hidden="true">
+  {%- if cart.item_count < 100 -%}{{ cart.item_count }}{%- else -%}99+{%- endif -%}
+</span>
+<span class="visually-hidden">{{ 'sections.header.cart_count' | t: count: cart.item_count }}</span>

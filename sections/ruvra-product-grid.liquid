@@ -1,0 +1,81 @@
+<script src="{{ 'product-form.js' | asset_url }}" defer="defer"></script>
+
+{%- liquid
+  assign grid_collection = section.settings.collection
+  assign view_all_url = section.settings.view_all_link
+  if view_all_url == blank and grid_collection != blank
+    assign view_all_url = grid_collection.url
+  endif
+-%}
+
+<div class="ruvra-block ruvra-container">
+  {%- render 'ruvra-section-head', title: section.settings.title, link: view_all_url -%}
+
+  <ul class="ruvra-grid{% if section.settings.mobile_scroll %} ruvra-grid--scroll{% endif %}" role="list">
+    {%- if grid_collection != blank and grid_collection.products_count > 0 -%}
+      {%- for product in grid_collection.products limit: section.settings.products_to_show -%}
+        <li>
+          {%- render 'ruvra-card-product', card_product: product, section_id: section.id -%}
+        </li>
+      {%- endfor -%}
+    {%- else -%}
+      {%- for i in (1..4) -%}
+        <li>{%- render 'ruvra-card-product', card_product: blank, section_id: section.id -%}</li>
+      {%- endfor -%}
+    {%- endif -%}
+  </ul>
+</div>
+
+{% schema %}
+{
+  "name": "ruvra · Productos",
+  "tag": "section",
+  "class": "section-ruvra-product-grid",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Título",
+      "default": "Nuestros productos"
+    },
+    {
+      "type": "collection",
+      "id": "collection",
+      "label": "Colección",
+      "info": "Para \"Más vendidos\": una colección ordenada por \"Más vendidos\" en el admin."
+    },
+    {
+      "type": "range",
+      "id": "products_to_show",
+      "label": "Cantidad de productos",
+      "min": 2,
+      "max": 12,
+      "step": 2,
+      "default": 4
+    },
+    {
+      "type": "url",
+      "id": "view_all_link",
+      "label": "Link de \"Ver todo\" (opcional)",
+      "info": "Si queda vacío, lleva a la colección elegida."
+    },
+    {
+      "type": "checkbox",
+      "id": "mobile_scroll",
+      "label": "En celular: una fila con scroll horizontal",
+      "default": true
+    }
+  ],
+  "presets": [
+    {
+      "name": "ruvra · Productos"
+    }
+  ],
+  "disabled_on": {
+    "groups": [
+      "header",
+      "footer"
+    ]
+  }
+}
+{% endschema %}

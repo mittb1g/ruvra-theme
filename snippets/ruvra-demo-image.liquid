@@ -1,0 +1,28 @@
+{% comment %}
+  Imagen de muestra (fotos del handoff guardadas en assets/) para cuando una sección
+  todavía no tiene imagen cargada. Se reemplaza sola al elegir una imagen en el personalizador.
+
+  Accepts:
+  - demo: {String} 'pad' | 'inflador' | 'soporte'
+  - class: {String}
+  - loading: {String} 'lazy' | 'eager' (default 'lazy')
+{% endcomment %}
+{%- liquid
+  case demo
+    when 'pad'
+      assign demo_size = 640
+    when 'inflador'
+      assign demo_size = 1200
+    when 'soporte'
+      assign demo_size = 1024
+  endcase
+  assign demo_file = 'ruvra-demo-' | append: demo | append: '.jpg'
+-%}
+<img
+  src="{{ demo_file | asset_url }}"
+  width="{{ demo_size }}"
+  height="{{ demo_size }}"
+  loading="{{ loading | default: 'lazy' }}"
+  alt=""
+  class="{{ class }}"
+>

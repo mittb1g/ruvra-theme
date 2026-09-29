@@ -1,0 +1,39 @@
+{% comment %}
+  Logo vectorial de ruvra (Geist Bold outlined, ver ruvra/marca/). Toma el color del texto (currentColor).
+
+  Accepts:
+  - mark: {String} 'logo' (ruvra■) o 'iso' (r■). Default: 'logo'
+  - height: {Number} alto en px del trazo. Default: 18
+  - class: {String} clases extra (opcional)
+
+  Usage:
+  {% render 'ruvra-logo', height: 18 %}
+{% endcomment %}
+
+{%- liquid
+  assign logo_height = height | default: 18
+  if mark == 'iso'
+    assign logo_width = logo_height | times: 1.16382 | round: 2
+  else
+    assign logo_width = logo_height | times: 4.42814 | round: 2
+  endif
+-%}
+<svg
+  class="ruvra-logo{% if class %} {{ class }}{% endif %}"
+  xmlns="http://www.w3.org/2000/svg"
+  width="{{ logo_width }}"
+  height="{{ logo_height }}"
+  aria-hidden="true"
+  focusable="false"
+  {%- if mark == 'iso' %}
+    viewBox="66 -536 623.81 536"
+  {%- else %}
+    viewBox="66 -548 2479.76 560"
+  {%- endif %}
+>
+  {%- if mark == 'iso' -%}
+    <path fill="currentColor" d="M216 0L66 0L66-536L208-536L213-380L202-383Q215-464 248-500Q281-536 339-536L388-536L388-412L339-412Q297-412 270-401Q243-390 229.50-366Q216-342 216-301M504.63 0V-185.19H689.81V0Z"/>
+  {%- else -%}
+    <path fill="currentColor" d="M216 0L66 0L66-536L208-536L213-380L202-383Q215-464 248-500Q281-536 339-536L388-536L388-412L339-412Q297-412 270-401Q243-390 229.50-366Q216-342 216-301M583 12Q500 12 453.50-41.50Q407-95 407-191L407-536L557-536L557-226Q557-164 576-135.50Q595-107 636-107Q682-107 707.50-138.50Q733-170 733-233L733-536L883-536L883 0L746 0L742-154L761-150Q749-70 704-29Q659 12 583 12M1249 0L1075 0L879-536L1036-536L1163-151L1289-536L1446-536M1591 0L1441 0L1441-536L1583-536L1588-380L1577-383Q1590-464 1623-500Q1656-536 1714-536L1763-536L1763-412L1714-412Q1672-412 1645-401Q1618-390 1604.50-366Q1591-342 1591-301M1921 12Q1838 12 1785.50-26.50Q1733-65 1733-134Q1733-205 1777.50-243.50Q1822-282 1909-300L2082-334Q2082-386 2058.50-412.50Q2035-439 1991-439Q1948-439 1924-419.50Q1900-400 1893-362L1742-369Q1757-457 1821.50-502.50Q1886-548 1991-548Q2111-548 2171.50-491Q2232-434 2232-324L2232-141Q2232-118 2239.50-110.50Q2247-103 2262-103L2277-103L2277 0Q2270 2 2254.50 4Q2239 6 2224 6Q2192 6 2164.50-5Q2137-16 2120-42.50Q2103-69 2103-118L2116-108Q2106-72 2080.50-45Q2055-18 2014.50-3Q1974 12 1921 12M1957-91Q1994-91 2022-105.50Q2050-120 2066-148Q2082-176 2082-214L2082-240L1960-214Q1924-207 1905.50-190.50Q1887-174 1887-148Q1887-121 1905-106Q1923-91 1957-91M2379.09 0V-166.67H2545.76V0Z"/>
+  {%- endif -%}
+</svg>

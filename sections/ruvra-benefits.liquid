@@ -1,0 +1,70 @@
+<div class="ruvra-container">
+  <ul class="ruvra-benefits" role="list">
+    {%- for block in section.blocks -%}
+      <li class="ruvra-benefits__item" {{ block.shopify_attributes }}>
+        {%- render 'ruvra-icon', icon: block.settings.icon, size: 30, stroke: 1.6 -%}
+        <div>
+          <p class="ruvra-benefits__title">{{ block.settings.title | escape }}</p>
+          {%- if block.settings.text != blank -%}
+            <p class="ruvra-benefits__text">{{ block.settings.text | escape }}</p>
+          {%- endif -%}
+        </div>
+      </li>
+    {%- endfor -%}
+  </ul>
+</div>
+
+{% schema %}
+{
+  "name": "ruvra · Beneficios",
+  "tag": "section",
+  "class": "section-ruvra-benefits",
+  "max_blocks": 4,
+  "blocks": [
+    {
+      "type": "benefit",
+      "name": "Beneficio",
+      "settings": [
+        {
+          "type": "select",
+          "id": "icon",
+          "label": "Ícono",
+          "options": [
+            { "value": "truck", "label": "Camión (envíos)" },
+            { "value": "card", "label": "Tarjeta (cuotas)" },
+            { "value": "shield", "label": "Escudo (compra protegida)" },
+            { "value": "refresh", "label": "Flecha circular (cambios)" }
+          ],
+          "default": "truck"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Título",
+          "default": "Envíos a todo el país"
+        },
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Detalle",
+          "default": "[condición de envío]"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "ruvra · Beneficios",
+      "blocks": [
+        { "type": "benefit", "settings": { "icon": "truck", "title": "Envíos a todo el país", "text": "[condición de envío]" } },
+        { "type": "benefit", "settings": { "icon": "card", "title": "Cuotas sin interés", "text": "[condición de pago]" } },
+        { "type": "benefit", "settings": { "icon": "shield", "title": "Compra protegida", "text": "Pago 100% seguro" } },
+        { "type": "benefit", "settings": { "icon": "refresh", "title": "Cambios fáciles", "text": "[plazo de cambio]" } }
+      ]
+    }
+  ],
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  }
+}
+{% endschema %}

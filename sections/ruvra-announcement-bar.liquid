@@ -1,0 +1,67 @@
+<div class="ruvra-ann" role="region" aria-label="{{ 'sections.announcements.announcement_bar' | t }}">
+  <div class="ruvra-ann__inner">
+    {%- for block in section.blocks -%}
+      {%- unless forloop.first -%}
+        <span class="ruvra-ann__sep" aria-hidden="true"></span>
+      {%- endunless -%}
+      {%- if block.settings.link != blank -%}
+        <a class="ruvra-ann__item" href="{{ block.settings.link }}" {{ block.shopify_attributes }}>
+      {%- else -%}
+        <span class="ruvra-ann__item" {{ block.shopify_attributes }}>
+      {%- endif -%}
+      <span class="ruvra-ann__text ruvra-ann__text--desktop">{{ block.settings.text }}</span>
+      <span class="ruvra-ann__text ruvra-ann__text--mobile">{{ block.settings.text_mobile | default: block.settings.text }}</span>
+      {%- if block.settings.link != blank -%}
+        </a>
+      {%- else -%}
+        </span>
+      {%- endif -%}
+    {%- endfor -%}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "ruvra · Barra de anuncios",
+  "tag": "div",
+  "class": "section-ruvra-ann",
+  "max_blocks": 3,
+  "blocks": [
+    {
+      "type": "message",
+      "name": "Mensaje",
+      "settings": [
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Texto",
+          "default": "Envío gratis en compras desde $[MONTO]"
+        },
+        {
+          "type": "text",
+          "id": "text_mobile",
+          "label": "Texto en celular (opcional)",
+          "info": "Versión más corta para pantallas chicas. Si queda vacío, se usa el texto de arriba."
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Link (opcional)"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "ruvra · Barra de anuncios",
+      "blocks": [
+        { "type": "message", "settings": { "text": "Envío gratis en compras desde $[MONTO]", "text_mobile": "Envío gratis desde $[MONTO]" } },
+        { "type": "message", "settings": { "text": "[N] cuotas sin interés" } }
+      ]
+    }
+  ],
+  "enabled_on": {
+    "groups": ["header"]
+  }
+}
+{% endschema %}

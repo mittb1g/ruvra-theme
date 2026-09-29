@@ -1,0 +1,285 @@
+<link rel="stylesheet" href="{{ 'component-list-menu.css' | asset_url }}" media="print" onload="this.media='all'">
+<link rel="stylesheet" href="{{ 'component-menu-drawer.css' | asset_url }}" media="print" onload="this.media='all'">
+
+{%- liquid
+  assign nav_menu = section.settings.menu
+  assign chips_menu = section.settings.mobile_menu | default: section.settings.menu
+
+  assign chip_is_current = false
+  for link in chips_menu.links
+    if link.current
+      assign chip_is_current = true
+    endif
+  endfor
+-%}
+
+<div class="ruvra-header header-wrapper">
+  <div class="ruvra-header__bar ruvra-container">
+    {%- if nav_menu != blank -%}
+      <div class="ruvra-header__drawer">
+        {%- render 'header-drawer', show_country_selector: false, show_language_selector: false, show_social_links: true -%}
+      </div>
+    {%- endif -%}
+
+    <a href="{{ routes.root_url }}" class="ruvra-header__logo" aria-label="{{ shop.name | escape }}">
+      <span class="ruvra-header__logo-desktop">{% render 'ruvra-logo', height: 18 %}</span>
+      <span class="ruvra-header__logo-mobile">{% render 'ruvra-logo', height: 14.5 %}</span>
+    </a>
+
+    <div class="ruvra-header__search">
+      {%- if settings.predictive_search_enabled -%}
+        <predictive-search class="ruvra-search" data-loading-text="{{ 'accessibility.loading' | t }}">
+      {%- else -%}
+        <search-form class="ruvra-search">
+      {%- endif -%}
+      <form action="{{ routes.search_url }}" method="get" role="search" class="search ruvra-search__form">
+        <label class="ruvra-search__field" for="RuvraSearch-{{ section.id }}">
+          {%- render 'ruvra-icon', icon: 'search', size: 18, stroke: 2 -%}
+          <span class="visually-hidden">{{ section.settings.search_label }}</span>
+          <input
+            class="ruvra-search__input"
+            id="RuvraSearch-{{ section.id }}"
+            type="search"
+            name="q"
+            value="{{ search.terms | escape }}"
+            placeholder="{{ section.settings.search_placeholder | escape }}"
+            {%- if settings.predictive_search_enabled -%}
+              role="combobox"
+              aria-expanded="false"
+              aria-owns="predictive-search-results"
+              aria-controls="predictive-search-results"
+              aria-haspopup="listbox"
+              aria-autocomplete="list"
+              autocorrect="off"
+              autocomplete="off"
+              autocapitalize="off"
+              spellcheck="false"
+            {%- endif -%}
+          >
+          <input type="hidden" name="options[prefix]" value="last">
+          <button
+            type="reset"
+            class="reset__button ruvra-search__reset{% if search.terms == blank %} hidden{% endif %}"
+            aria-label="{{ 'general.search.reset' | t }}"
+          >
+            {%- render 'ruvra-icon', icon: 'close', size: 16, stroke: 2 -%}
+          </button>
+        </label>
+
+        {%- if settings.predictive_search_enabled -%}
+          <div class="predictive-search predictive-search--header" tabindex="-1" data-predictive-search>
+            {%- render 'loading-spinner', class: 'predictive-search__loading-state' -%}
+          </div>
+          <span class="predictive-search-status visually-hidden" role="status" aria-hidden="true"></span>
+        {%- endif -%}
+      </form>
+      {%- if settings.predictive_search_enabled -%}
+        </predictive-search>
+      {%- else -%}
+        </search-form>
+      {%- endif -%}
+    </div>
+
+    <div class="ruvra-header__actions">
+      {%- if shop.customer_accounts_enabled -%}
+        <shopify-account
+          menu="{{ settings.customer_account_menu | default: 'customer-account-main-menu' }}"
+          class="ruvra-header__action ruvra-header__account"
+        >
+          <span slot="signed-out-avatar" class="ruvra-header__account-inner">
+            {%- render 'ruvra-icon', icon: 'account', size: 22 -%}
+            <span class="ruvra-header__label">{{ section.settings.account_label }}</span>
+          </span>
+        </shopify-account>
+      {%- endif -%}
+
+      <a href="{{ routes.cart_url }}" class="ruvra-header__action ruvra-header__cart" id="cart-icon-bubble">
+        {%- render 'ruvra-cart-bubble' -%}
+      </a>
+    </div>
+  </div>
+
+  {%- if nav_menu != blank -%}
+    <nav class="ruvra-nav ruvra-nav--desktop" aria-label="{{ 'sections.header.menu' | t }}">
+      <ul class="ruvra-container ruvra-nav__list" role="list">
+        {%- for link in nav_menu.links -%}
+          <li>
+            <a
+              href="{{ link.url }}"
+              class="ruvra-nav__link{% if link.title == section.settings.highlight_title %} is-highlight{% endif %}"
+              {% if link.current %}aria-current="page"{% endif %}
+            >
+              {{- link.title | escape -}}
+            </a>
+          </li>
+        {%- endfor -%}
+      </ul>
+    </nav>
+  {%- endif -%}
+
+  {%- if section.settings.mobile_row == 'trust' -%}
+    <div class="ruvra-nav ruvra-nav--chips ruvra-trust">
+      {%- if section.settings.reviews_link != blank -%}<a href="{{ section.settings.reviews_link }}" class="ruvra-trust__reviews">{%- else -%}<div class="ruvra-trust__reviews">{%- endif -%}
+        <span class="ruvra-stars" aria-hidden="true">
+          {%- for i in (1..5) -%}
+            <svg width="12" height="12" viewBox="0 0 24 24"><path fill="currentColor" d="M12 2.5l2.9 6.2 6.8.8-5 4.7 1.3 6.7L12 17.6l-6 3.3 1.3-6.7-5-4.7 6.8-.8z"/></svg>
+          {%- endfor -%}
+        </span>
+        <span class="ruvra-trust__score">
+          {{- section.settings.rating | escape }} · {{ section.settings.reviews_count | escape -}}
+          <span class="ruvra-trust__word"> {{ section.settings.reviews_word | escape }}</span>
+        </span>
+      {%- if section.settings.reviews_link != blank -%}</a>{%- else -%}</div>{%- endif -%}
+
+      <ul class="ruvra-trust__pay" role="list" aria-label="{{ 'sections.footer.payment' | t }}">
+        {%- assign logos = section.settings.payment_logos | split: ',' -%}
+        {%- for logo in logos -%}
+          {%- assign logo_type = logo | strip -%}
+          {%- if logo_type != blank -%}
+            <li class="ruvra-pay-tile">{{ logo_type | payment_type_svg_tag }}</li>
+          {%- endif -%}
+        {%- endfor -%}
+      </ul>
+    </div>
+  {%- elsif chips_menu != blank -%}
+    <nav class="ruvra-nav ruvra-nav--chips" aria-label="{{ 'sections.header.menu' | t }}">
+      <ul class="ruvra-nav__chips" role="list">
+        {%- for link in chips_menu.links -%}
+          {%- liquid
+            assign chip_active = link.current
+            if chip_is_current == false and forloop.first
+              assign chip_active = true
+            endif
+          -%}
+          <li>
+            <a
+              href="{{ link.url }}"
+              class="ruvra-chip{% if chip_active %} is-active{% endif %}{% if link.title == section.settings.highlight_title %} is-highlight{% endif %}"
+              {% if link.current %}aria-current="page"{% endif %}
+            >
+              {{- link.title | escape -}}
+            </a>
+          </li>
+        {%- endfor -%}
+      </ul>
+    </nav>
+  {%- endif -%}
+</div>
+
+{% schema %}
+{
+  "name": "ruvra · Header",
+  "class": "section-header",
+  "settings": [
+    {
+      "type": "link_list",
+      "id": "menu",
+      "label": "Menú principal",
+      "default": "main-menu",
+      "info": "En computadora se muestra como barra; en celular, dentro del menú hamburguesa."
+    },
+    {
+      "type": "header",
+      "content": "Fila debajo del buscador (celular)"
+    },
+    {
+      "type": "select",
+      "id": "mobile_row",
+      "label": "Qué mostrar",
+      "options": [
+        {
+          "value": "trust",
+          "label": "Reseñas y medios de pago"
+        },
+        {
+          "value": "menu",
+          "label": "Chips del menú"
+        }
+      ],
+      "default": "trust"
+    },
+    {
+      "type": "text",
+      "id": "rating",
+      "label": "Puntaje",
+      "default": "4,9"
+    },
+    {
+      "type": "text",
+      "id": "reviews_count",
+      "label": "Cantidad de reseñas",
+      "default": "2670"
+    },
+    {
+      "type": "text",
+      "id": "reviews_word",
+      "label": "Palabra después de la cantidad",
+      "default": "reseñas",
+      "info": "En pantallas muy chicas se oculta para que entre todo en una línea."
+    },
+    {
+      "type": "url",
+      "id": "reviews_link",
+      "label": "Link de reseñas (opcional)"
+    },
+    {
+      "type": "text",
+      "id": "payment_logos",
+      "label": "Logos de medios de pago",
+      "default": "visa, master, american_express, mercadopago",
+      "info": "Separados por coma. Algunos: visa, master, american_express, mercadopago, cabal, maestro, diners_club."
+    },
+    {
+      "type": "url",
+      "id": "payments_link",
+      "label": "Link de medios de pago (opcional)"
+    },
+    {
+      "type": "link_list",
+      "id": "mobile_menu",
+      "label": "Menú de chips",
+      "info": "Solo si elegís \"Chips del menú\". Si queda vacío, usa el menú principal."
+    },
+    {
+      "type": "text",
+      "id": "highlight_title",
+      "label": "Link destacado en negrita",
+      "default": "Ofertas",
+      "info": "Tiene que coincidir exacto con el nombre del link en el menú."
+    },
+    {
+      "type": "header",
+      "content": "Textos"
+    },
+    {
+      "type": "text",
+      "id": "search_placeholder",
+      "label": "Texto del buscador",
+      "default": "¿Qué estás buscando?"
+    },
+    {
+      "type": "text",
+      "id": "search_label",
+      "label": "Etiqueta accesible del buscador",
+      "default": "Buscar productos"
+    },
+    {
+      "type": "text",
+      "id": "account_label",
+      "label": "Texto de la cuenta",
+      "default": "Mi cuenta"
+    },
+    {
+      "type": "color_scheme",
+      "id": "menu_color_scheme",
+      "label": "Colores del menú de celular",
+      "default": "scheme-1"
+    }
+  ],
+  "enabled_on": {
+    "groups": [
+      "header"
+    ]
+  }
+}
+{% endschema %}

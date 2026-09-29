@@ -1,0 +1,41 @@
+{% comment %}
+  Precio + precio tachado + cuotas sin interés (ajustes en "ruvra · Cuotas y etiquetas").
+
+  Accepts:
+  - product: {Object} producto (requerido)
+
+  Usage:
+  {% render 'ruvra-price', product: card_product %}
+{% endcomment %}
+
+{%- liquid
+  assign variant = product.selected_or_first_available_variant
+  assign price = variant.price
+  assign compare_at = variant.compare_at_price
+  if product.price_varies
+    assign price = product.price_min
+    assign compare_at = product.compare_at_price_min
+  endif
+
+  assign installments = settings.ruvra_installments | default: 0
+  assign installments_min = settings.ruvra_installments_min | default: 0 | times: 100
+-%}
+
+<div class="ruvra-price">
+  <span class="ruvra-price__current">
+    {%- if product.price_varies %}{{ 'ruvra.card.from' | t }} {% endif -%}
+    {{- price | money -}}
+  </span>
+  {%- if compare_at > price -%}
+    <s class="ruvra-price__compare">
+      <span class="visually-hidden">{{ 'products.product.price.regular_price' | t }}</span>
+      {{- compare_at | money -}}
+    </s>
+  {%- endif -%}
+</div>
+
+{%- if installments > 1 and price >= installments_min -%}
+  <p class="ruvra-installments">
+    {{- 'ruvra.card.installments_html' | t: count: installments, amount: price | divided_by: installments | money -}}
+  </p>
+{%- endif -%}

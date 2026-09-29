@@ -1,0 +1,133 @@
+<div class="ruvra-block">
+  <div class="ruvra-container">
+    {%- render 'ruvra-section-head', title: section.settings.title, link: section.settings.view_all_link -%}
+  </div>
+
+  <ul class="ruvra-categories" role="list">
+    {%- for block in section.blocks -%}
+      {%- liquid
+        assign collection_item = block.settings.collection
+        assign card_image = block.settings.image | default: collection_item.featured_image
+        assign card_label = block.settings.label | default: collection_item.title
+        assign card_url = collection_item.url | default: routes.all_products_collection_url
+      -%}
+      <li class="ruvra-categories__item" {{ block.shopify_attributes }}>
+        <a
+          href="{{ card_url }}"
+          class="ruvra-category{% if block.settings.product_on_gray %} ruvra-category--gray{% endif %}"
+        >
+          {%- if card_image != blank -%}
+            {{
+              card_image
+              | image_url: width: 900
+              | image_tag:
+                loading: 'lazy',
+                widths: '240, 480, 600, 900',
+                sizes: '(min-width: 990px) 440px, 240px',
+                alt: '',
+                class: 'ruvra-category__img'
+            }}
+          {%- elsif block.settings.demo != 'none' -%}
+            {%- render 'ruvra-demo-image', demo: block.settings.demo, class: 'ruvra-category__img' -%}
+          {%- else -%}
+            {{ 'collection-apparel-1' | placeholder_svg_tag: 'ruvra-category__img ruvra-placeholder' }}
+          {%- endif -%}
+          <span class="ruvra-category__label ruvra-category__label--{{ block.settings.label_style }}">
+            {{- card_label | default: 'Categoría' | escape }} <span aria-hidden="true">→</span>
+          </span>
+        </a>
+      </li>
+    {%- endfor -%}
+  </ul>
+</div>
+
+{% schema %}
+{
+  "name": "ruvra · Categorías",
+  "tag": "section",
+  "class": "section-ruvra-categories",
+  "max_blocks": 6,
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Título",
+      "default": "Comprá por categoría"
+    },
+    {
+      "type": "url",
+      "id": "view_all_link",
+      "label": "Link de \"Ver todo\"",
+      "default": "/collections/all"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "category",
+      "name": "Categoría",
+      "settings": [
+        {
+          "type": "collection",
+          "id": "collection",
+          "label": "Colección"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Imagen (opcional)",
+          "info": "Si queda vacía, usa la imagen de la colección."
+        },
+        {
+          "type": "select",
+          "id": "demo",
+          "label": "Imagen de muestra",
+          "info": "Solo se ve mientras no subas una imagen arriba.",
+          "options": [
+            { "value": "none", "label": "Ninguna" },
+            { "value": "pad", "label": "Pad de carga" },
+            { "value": "inflador", "label": "Inflador" },
+            { "value": "soporte", "label": "Soporte" }
+          ],
+          "default": "none"
+        },
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Texto de la etiqueta (opcional)",
+          "info": "Si queda vacío, usa el nombre de la colección."
+        },
+        {
+          "type": "select",
+          "id": "label_style",
+          "label": "Color de la etiqueta",
+          "options": [
+            { "value": "light", "label": "Blanca" },
+            { "value": "dark", "label": "Negra" }
+          ],
+          "default": "light"
+        },
+        {
+          "type": "checkbox",
+          "id": "product_on_gray",
+          "label": "Foto de producto con fondo blanco",
+          "info": "Funde el fondo blanco de la foto con el gris de la tarjeta.",
+          "default": false
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "ruvra · Categorías",
+      "blocks": [
+        { "type": "category", "settings": { "label": "Carga" } },
+        { "type": "category", "settings": { "label": "Infladores", "label_style": "dark", "product_on_gray": true } },
+        { "type": "category", "settings": { "label": "Soportes" } }
+      ]
+    }
+  ],
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  }
+}
+{% endschema %}
