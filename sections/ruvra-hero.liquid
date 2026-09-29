@@ -90,7 +90,7 @@
           assign bg_style = ''
           assign bg_class = ''
           if hp != blank
-            assign mf_bg = hp.metafields.custom['hero-background']
+            assign mf_bg = hp.metafields.custom.hero_background | default: hp.metafields.custom['hero-background']
             if mf_bg != blank
               if mf_bg.type == 'color'
                 assign bg_color = mf_bg.value
@@ -123,10 +123,10 @@
           assign hero_mobile = ''
           if hp != blank
             assign mf = hp.metafields.custom
-            assign mf_video_d = mf['hero-video-desktop']
-            assign mf_video_m = mf['hero-video-phone']
-            assign mf_image_d = mf['hero-image-desktop']
-            assign mf_image_m = mf['hero-image-phone']
+            assign mf_video_d = mf.hero_video_desktop | default: mf['hero-video-desktop']
+            assign mf_video_m = mf.hero_video_phone | default: mf['hero-video-phone']
+            assign mf_image_d = mf.hero_image_desktop | default: mf['hero-image-desktop']
+            assign mf_image_m = mf.hero_image_phone | default: mf['hero-image-phone']
             if mf_video_d != blank or mf_video_m != blank or mf_image_d != blank or mf_image_m != blank
               assign has_hero_media = true
             endif

@@ -750,7 +750,39 @@ shopify-account.ruvra-header__account {
 
 /* Fondo propio del producto (metacampo hero-background): color o imagen */
 .ruvra-hero__slide.has-bg-image {
+  position: relative;
+  justify-content: flex-end;
+  min-height: 48rem;
   background: var(--ruvra-hero-bg-image) center / cover no-repeat, var(--ruvra-surface);
+}
+
+/* Con imagen de fondo, la imagen es todo el visual: sin foto de producto encima */
+.ruvra-hero__slide.has-bg-image .ruvra-hero__media {
+  display: none;
+}
+
+/* Velo claro del lado del texto para que se lea sobre cualquier foto */
+.ruvra-hero__slide.has-bg-image::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(0deg, rgba(244, 244, 244, 0.94) 0%, rgba(244, 244, 244, 0.82) 38%, rgba(244, 244, 244, 0) 72%);
+  pointer-events: none;
+}
+
+.ruvra-hero__slide.has-bg-image .ruvra-hero__content {
+  position: relative;
+  z-index: 1;
+}
+
+@media screen and (min-width: 990px) {
+  .ruvra-hero__slide.has-bg-image {
+    min-height: 0;
+  }
+
+  .ruvra-hero__slide.has-bg-image::before {
+    background: linear-gradient(90deg, rgba(244, 244, 244, 0.92) 0%, rgba(244, 244, 244, 0.7) 34%, rgba(244, 244, 244, 0) 62%);
+  }
 }
 
 .ruvra-hero__slide[style] .ruvra-hero__media--contain {
