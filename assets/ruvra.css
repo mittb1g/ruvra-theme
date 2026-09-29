@@ -745,7 +745,58 @@ shopify-account.ruvra-header__account {
   display: flex;
   flex-direction: column;
   scroll-snap-align: start;
-  background: var(--ruvra-surface);
+  background: var(--ruvra-hero-bg, var(--ruvra-surface));
+}
+
+/* Fondo propio del producto (metacampo hero-background): color o imagen */
+.ruvra-hero__slide.has-bg-image {
+  background: var(--ruvra-hero-bg-image) center / cover no-repeat, var(--ruvra-surface);
+}
+
+.ruvra-hero__slide[style] .ruvra-hero__media--contain {
+  background: transparent;
+}
+
+.ruvra-hero__slide.has-bg-image .ruvra-hero__media--contain .ruvra-hero__img,
+.ruvra-hero__slide.is-dark .ruvra-hero__media--contain .ruvra-hero__img {
+  mix-blend-mode: normal;
+}
+
+.ruvra-hero__slide.is-dark .ruvra-hero__heading,
+.ruvra-hero__slide.is-dark .ruvra-hero__price .ruvra-price__current {
+  color: var(--ruvra-white);
+}
+
+.ruvra-hero__slide.is-dark .ruvra-hero__text,
+.ruvra-hero__slide.is-dark .ruvra-hero__price .ruvra-price__compare {
+  color: rgba(255, 255, 255, 0.72);
+}
+
+.ruvra-hero__slide.is-dark .ruvra-hero__price .ruvra-installments {
+  color: #6fdc8c;
+}
+
+.ruvra-hero__slide.is-dark .ruvra-badge:not(.ruvra-badge--sale) {
+  background: var(--ruvra-white);
+  color: var(--ruvra-black);
+}
+
+.ruvra-hero__slide.is-dark .ruvra-btn:not(.ruvra-btn--outline) {
+  background: var(--ruvra-white);
+  color: var(--ruvra-black);
+}
+
+.ruvra-hero__slide.is-dark .ruvra-btn--outline {
+  border-color: var(--ruvra-white);
+  color: var(--ruvra-white);
+}
+
+.ruvra-hero__slide.is-dark .ruvra-hero__dot {
+  background: rgba(255, 255, 255, 0.4);
+}
+
+.ruvra-hero__slide.is-dark .ruvra-hero__dot[aria-current='true'] {
+  background: var(--ruvra-white);
 }
 
 .ruvra-hero__media {

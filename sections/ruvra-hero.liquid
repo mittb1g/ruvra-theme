@@ -86,8 +86,30 @@
         assign media_fit = block.settings.fit
         assign is_first = forloop.first
       -%}
+        {%- liquid
+          assign bg_style = ''
+          assign bg_class = ''
+          if hp != blank
+            assign mf_bg = hp.metafields.custom['hero-background']
+            if mf_bg != blank
+              if mf_bg.type == 'color'
+                assign bg_color = mf_bg.value
+                assign bg_style = '--ruvra-hero-bg: ' | append: bg_color | append: ';'
+                assign bg_brightness = bg_color | color_brightness
+                if bg_brightness < 128
+                  assign bg_class = ' is-dark'
+                endif
+              else
+                assign bg_url = mf_bg | image_url: width: 2000
+                assign bg_style = '--ruvra-hero-bg-image: url(' | append: bg_url | append: ');'
+                assign bg_class = ' has-bg-image'
+              endif
+            endif
+          endif
+        -%}
       <div
-        class="ruvra-hero__slide{% if sold_out %} is-sold-out{% endif %}"
+        class="ruvra-hero__slide{% if sold_out %} is-sold-out{% endif %}{{ bg_class }}"
+        {% if bg_style != '' %}style="{{ bg_style }}"{% endif %}
         id="Slide-{{ section.id }}-{{ forloop.index }}"
         role="group"
         aria-roledescription="slide"
