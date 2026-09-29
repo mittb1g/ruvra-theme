@@ -3,51 +3,56 @@
     "hero": {
       "type": "ruvra-hero",
       "blocks": {
-        "slide-1": {
+        "kit-ruta": {
           "type": "slide",
           "settings": {
-            "demo": "pad",
-            "badge": "NUEVO",
-            "heading": "Tu auto, mejor equipado.",
-            "text": "Pad de carga inalámbrica antideslizante. Apoyás el celular y listo: carga sin cables mientras manejás.",
-            "text_mobile": "Pad de carga inalámbrica antideslizante. Apoyás el celular y carga sin cables.",
-            "button_label_1": "Comprar ahora",
             "button_link_1": "",
-            "button_label_2": "Ver ofertas",
-            "button_link_2": ""
-          }
-        },
-        "slide-2": {
-          "type": "slide",
-          "settings": {
+            "button_label_2": "Ver todos los kits",
+            "button_link_2": "",
             "demo": "inflador",
-            "badge": "[ETIQUETA]",
-            "heading": "[Título slide 2]",
-            "text": "Inflador digital portátil a batería. [Texto]",
-            "button_label_1": "Comprar ahora",
-            "button_link_1": "",
-            "button_label_2": "",
-            "button_link_2": ""
+            "demo_2": "soporte",
+            "badge": "KIT · AHORRÁ [X]%",
+            "heading": "Kit de ruta.",
+            "text": "Inflador digital + soporte magnético. Todo lo que necesitás para salir tranquilo.",
+            "text_mobile": "Inflador digital + soporte magnético.",
+            "button_label_1": "Ver kit de ruta"
           }
         },
-        "slide-3": {
+        "kit-arreglo": {
           "type": "slide",
           "settings": {
-            "demo": "soporte",
-            "badge": "[ETIQUETA]",
-            "heading": "[Título slide 3]",
-            "text": "Soporte magnético articulado para celular. [Texto]",
-            "button_label_1": "Comprar ahora",
             "button_link_1": "",
-            "button_label_2": "",
-            "button_link_2": ""
+            "button_label_2": "Ver todos los kits",
+            "button_link_2": "",
+            "demo": "inflador",
+            "demo_2": "none",
+            "badge": "KIT · AHORRÁ [X]%",
+            "heading": "Kit arreglo.",
+            "text": "[Qué trae el kit arreglo]",
+            "text_mobile": "",
+            "button_label_1": "Ver kit arreglo"
+          }
+        },
+        "kit-organizador": {
+          "type": "slide",
+          "settings": {
+            "button_link_1": "",
+            "button_label_2": "Ver todos los kits",
+            "button_link_2": "",
+            "demo": "pad",
+            "demo_2": "soporte",
+            "badge": "KIT · AHORRÁ [X]%",
+            "heading": "Kit organizador.",
+            "text": "[Qué trae el kit organizador]",
+            "text_mobile": "",
+            "button_label_1": "Ver kit organizador"
           }
         }
       },
       "block_order": [
-        "slide-1",
-        "slide-2",
-        "slide-3"
+        "kit-ruta",
+        "kit-arreglo",
+        "kit-organizador"
       ],
       "settings": {
         "autoplay": true,

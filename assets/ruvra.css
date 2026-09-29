@@ -819,6 +819,42 @@ shopify-account.ruvra-header__account {
   background: var(--ruvra-black);
 }
 
+.ruvra-hero__media {
+  position: relative;
+}
+
+.ruvra-hero__media--split {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.ruvra-hero__plus {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 4rem;
+  height: 4rem;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  background: var(--ruvra-white);
+  color: var(--ruvra-black);
+  font-size: 2.4rem;
+  font-weight: 600;
+  line-height: 1;
+}
+
+.ruvra-hero__price .ruvra-price__current {
+  font-size: 2.4rem;
+}
+
+.ruvra-hero__price .ruvra-installments__long {
+  display: inline;
+}
+
 /* Hero compacto en celular: texto sobre la imagen con degradé */
 @media screen and (max-width: 989px) {
   .ruvra-hero--m-overlay .ruvra-hero__slide {
@@ -904,6 +940,19 @@ shopify-account.ruvra-header__account {
 
   .ruvra-hero--m-overlay .ruvra-hero__dot[aria-current='true'] {
     background: var(--ruvra-white);
+  }
+
+  .ruvra-hero--m-overlay .ruvra-hero__plus {
+    top: 32%;
+  }
+
+  .ruvra-hero--m-overlay .ruvra-hero__price .ruvra-price__current,
+  .ruvra-hero--m-overlay .ruvra-hero__price .ruvra-installments {
+    color: var(--ruvra-white);
+  }
+
+  .ruvra-hero--m-overlay .ruvra-hero__price .ruvra-price__compare {
+    color: rgba(255, 255, 255, 0.7);
   }
 }
 

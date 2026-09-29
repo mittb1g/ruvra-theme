@@ -14,7 +14,16 @@
         data-slide
         {{ block.shopify_attributes }}
       >
-        <div class="ruvra-hero__media">
+        {%- liquid
+          assign kit = block.settings.product
+          assign has_second = false
+          if block.settings.video == blank
+            if block.settings.image_2 != blank or block.settings.demo_2 != 'none'
+              assign has_second = true
+            endif
+          endif
+        -%}
+        <div class="ruvra-hero__media{% if has_second %} ruvra-hero__media--split{% endif %}">
           {%- if block.settings.video != blank -%}
             {{
               block.settings.video
@@ -56,6 +65,14 @@
           {%- else -%}
             {{ 'hero-apparel-1' | placeholder_svg_tag: 'ruvra-hero__img ruvra-placeholder' }}
           {%- endif -%}
+          {%- if has_second -%}
+            {%- if block.settings.image_2 != blank -%}
+              {{ block.settings.image_2 | image_url: width: 1000 | image_tag: loading: 'lazy', widths: '300, 500, 800, 1000', sizes: '(min-width: 990px) 336px, 50vw', class: 'ruvra-hero__img', alt: block.settings.image_2.alt }}
+            {%- else -%}
+              {%- render 'ruvra-demo-image', demo: block.settings.demo_2, class: 'ruvra-hero__img' -%}
+            {%- endif -%}
+            <span class="ruvra-hero__plus" aria-hidden="true">+</span>
+          {%- endif -%}
         </div>
 
         <div class="ruvra-hero__content">
@@ -77,10 +94,13 @@
               <p class="ruvra-hero__text">{{ block.settings.text | escape }}</p>
             {%- endif -%}
           {%- endif -%}
+          {%- if kit != blank -%}
+            <div class="ruvra-hero__price">{%- render 'ruvra-price', product: kit -%}</div>
+          {%- endif -%}
           {%- if block.settings.button_label_1 != blank or block.settings.button_label_2 != blank -%}
             <div class="ruvra-hero__buttons">
               {%- if block.settings.button_label_1 != blank -%}
-                <a href="{{ block.settings.button_link_1 | default: routes.all_products_collection_url }}" class="ruvra-btn">
+                <a href="{{ block.settings.button_link_1 | default: kit.url | default: routes.all_products_collection_url }}" class="ruvra-btn">
                   {{- block.settings.button_label_1 | escape -}}
                 </a>
               {%- endif -%}
@@ -176,6 +196,12 @@
       "name": "Slide",
       "settings": [
         {
+          "type": "product",
+          "id": "product",
+          "label": "Kit (producto)",
+          "info": "Elegí el kit: se muestra su precio con el tachado y el botón principal lleva al kit."
+        },
+        {
           "type": "image_picker",
           "id": "image",
           "label": "Imagen",
@@ -192,6 +218,36 @@
           "id": "demo",
           "label": "Imagen de muestra",
           "info": "Solo se ve mientras no subas una imagen arriba.",
+          "options": [
+            {
+              "value": "none",
+              "label": "Ninguna"
+            },
+            {
+              "value": "pad",
+              "label": "Pad de carga"
+            },
+            {
+              "value": "inflador",
+              "label": "Inflador"
+            },
+            {
+              "value": "soporte",
+              "label": "Soporte"
+            }
+          ],
+          "default": "none"
+        },
+        {
+          "type": "image_picker",
+          "id": "image_2",
+          "label": "Segunda imagen (opcional)",
+          "info": "Se muestra al lado de la primera, con un + en el medio. Ideal para mostrar lo que trae el kit."
+        },
+        {
+          "type": "select",
+          "id": "demo_2",
+          "label": "Segunda imagen de muestra",
           "options": [
             {
               "value": "none",
