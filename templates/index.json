@@ -10,7 +10,7 @@
             "button_label_2": "Ver todos los kits",
             "button_link_2": "",
             "demo": "inflador",
-            "demo_2": "soporte",
+            "demo_2": "none",
             "badge": "KIT · AHORRÁ [X]%",
             "heading": "Kit de ruta.",
             "text": "Inflador digital + soporte magnético. Todo lo que necesitás para salir tranquilo.",
@@ -40,7 +40,7 @@
             "button_label_2": "Ver todos los kits",
             "button_link_2": "",
             "demo": "pad",
-            "demo_2": "soporte",
+            "demo_2": "none",
             "badge": "KIT · AHORRÁ [X]%",
             "heading": "Kit organizador.",
             "text": "[Qué trae el kit organizador]",
@@ -154,55 +154,12 @@
         "products_to_show": 4,
         "view_all_link": "/collections/all"
       }
-    },
-    "promo": {
-      "type": "ruvra-promo-banner",
-      "blocks": {
-        "combo-1": {
-          "type": "combo",
-          "settings": {
-            "title": "Combo ruta: inflador + soporte",
-            "demo_a": "inflador",
-            "demo_b": "soporte"
-          }
-        },
-        "combo-2": {
-          "type": "combo",
-          "settings": {
-            "title": "Combo carga: pad + soporte",
-            "demo_a": "pad",
-            "demo_b": "soporte"
-          }
-        },
-        "combo-3": {
-          "type": "combo",
-          "settings": {
-            "title": "Combo completo: pad + inflador",
-            "demo_a": "pad",
-            "demo_b": "inflador"
-          }
-        }
-      },
-      "block_order": [
-        "combo-1",
-        "combo-2",
-        "combo-3"
-      ],
-      "settings": {
-        "discount": "[X]",
-        "marquee_text": "Armá tu kit | 2 o más productos | Ahorrá {descuento}%",
-        "heading": "Armá tu kit de ruta.",
-        "text": "Llevando 2 o más productos, pagás menos. Se aplica solo en el carrito.",
-        "button_label": "Ver combos",
-        "button_link": ""
-      }
     }
   },
   "order": [
     "hero",
     "best_sellers",
     "benefits",
-    "categories",
-    "promo"
+    "categories"
   ]
 }
