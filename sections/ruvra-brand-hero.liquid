@@ -1,23 +1,70 @@
 {%- liquid
   assign hero_product = section.settings.product
   assign button_url = section.settings.button_link | default: hero_product.url | default: routes.all_products_collection_url
+
+  assign line_1 = section.settings.line_1 | strip
+  assign line_2_options = section.settings.line_2 | split: '|'
+  assign line_2 = line_2_options.first | strip
+  assign slogan_full = line_1 | append: ' ' | append: line_2
 -%}
 
 <section class="ruvra-container ruvra-brand">
   <div class="ruvra-brand__panel">
-    <span class="ruvra-brand__line ruvra-brand__line--v" aria-hidden="true"></span>
-    <span class="ruvra-brand__line ruvra-brand__line--h" aria-hidden="true"></span>
     <span class="ruvra-brand__frame" aria-hidden="true"></span>
     <span class="ruvra-brand__corner ruvra-brand__corner--tl" aria-hidden="true"></span>
     <span class="ruvra-brand__corner ruvra-brand__corner--tr" aria-hidden="true"></span>
     <span class="ruvra-brand__corner ruvra-brand__corner--bl" aria-hidden="true"></span>
     <span class="ruvra-brand__corner ruvra-brand__corner--br" aria-hidden="true"></span>
 
-    <div class="ruvra-brand__center">
-      <h1 class="ruvra-brand__logo">
-        <span class="visually-hidden">{{ shop.name | escape }}</span>
-        {%- render 'ruvra-logo', height: 60, class: 'ruvra-brand__logo-svg' -%}
-      </h1>
+    <div class="ruvra-brand__top">
+      <span class="ruvra-brand__mark">{%- render 'ruvra-logo', height: 14 -%}</span>
+      {%- if section.settings.caption_right != blank -%}
+        <p class="ruvra-brand__caption">{{ section.settings.caption_right | escape }}</p>
+      {%- endif -%}
+    </div>
+
+    <div class="ruvra-brand__body">
+      <ruvra-typewriter
+        class="ruvra-slogan"
+        data-speed="{{ section.settings.speed }}"
+        data-alternates="{{ section.settings.line_2 | escape }}"
+      >
+        <h1 class="ruvra-slogan__h" aria-label="{{ slogan_full | escape }}">
+          {%- if line_1 != blank -%}
+            {%- liquid
+              assign ends_dot = false
+              assign last_char = line_1 | slice: -1
+              assign body = line_1
+              if last_char == '.'
+                assign ends_dot = true
+                assign body_size = line_1.size | minus: 1
+                assign body = line_1 | slice: 0, body_size
+              endif
+            -%}
+            <span class="ruvra-slogan__line" aria-hidden="true" data-text="{{ line_1 | escape }}">
+              {{- body | escape -}}
+              {%- if ends_dot -%}<i class="ruvra-slogan__sq"></i>{%- endif -%}
+            </span>
+          {%- endif -%}
+          {%- if line_2 != blank -%}
+            {%- liquid
+              assign ends_dot = false
+              assign last_char = line_2 | slice: -1
+              assign body = line_2
+              if last_char == '.'
+                assign ends_dot = true
+                assign body_size = line_2.size | minus: 1
+                assign body = line_2 | slice: 0, body_size
+              endif
+            -%}
+            <span class="ruvra-slogan__line ruvra-slogan__line--muted" aria-hidden="true" data-text="{{ line_2 | escape }}">
+              {{- body | escape -}}
+              {%- if ends_dot -%}<i class="ruvra-slogan__sq"></i>{%- endif -%}
+            </span>
+          {%- endif -%}
+        </h1>
+      </ruvra-typewriter>
+
       {%- if section.settings.tagline != blank -%}
         <p class="ruvra-brand__tagline">{{ section.settings.tagline | escape }}</p>
       {%- endif -%}
@@ -27,13 +74,12 @@
     </div>
 
     {%- if section.settings.caption_left != blank -%}
-      <p class="ruvra-brand__caption ruvra-brand__caption--left">{{ section.settings.caption_left | escape }}</p>
-    {%- endif -%}
-    {%- if section.settings.caption_right != blank -%}
-      <p class="ruvra-brand__caption ruvra-brand__caption--right">{{ section.settings.caption_right | escape }}</p>
+      <p class="ruvra-brand__caption ruvra-brand__caption--bottom">{{ section.settings.caption_left | escape }}</p>
     {%- endif -%}
   </div>
 </section>
+
+<script src="{{ 'ruvra-typewriter.js' | asset_url }}" defer="defer"></script>
 
 {% schema %}
 {
@@ -41,6 +87,31 @@
   "tag": "div",
   "class": "section-ruvra-brand",
   "settings": [
+    {
+      "type": "text",
+      "id": "line_1",
+      "label": "Slogan, primera línea",
+      "default": "Menos vueltas.",
+      "info": "Un punto al final se dibuja como el cuadradito del logo."
+    },
+    {
+      "type": "text",
+      "id": "line_2",
+      "label": "Slogan, segunda línea",
+      "default": "Más camino.",
+      "info": "Podés poner varias separadas por | y se escriben y borran en loop. Ej: Más camino.|Más carga.|Más tranquilo."
+    },
+    {
+      "type": "select",
+      "id": "speed",
+      "label": "Velocidad de escritura",
+      "options": [
+        { "value": "slow", "label": "Lenta" },
+        { "value": "normal", "label": "Normal" },
+        { "value": "fast", "label": "Rápida" }
+      ],
+      "default": "normal"
+    },
     {
       "type": "text",
       "id": "tagline",
@@ -66,14 +137,14 @@
     },
     {
       "type": "text",
-      "id": "caption_left",
-      "label": "Leyenda abajo a la izquierda",
+      "id": "caption_right",
+      "label": "Leyenda arriba a la derecha",
       "default": "accesorios automotrices"
     },
     {
       "type": "text",
-      "id": "caption_right",
-      "label": "Leyenda abajo a la derecha"
+      "id": "caption_left",
+      "label": "Leyenda abajo"
     }
   ],
   "presets": [

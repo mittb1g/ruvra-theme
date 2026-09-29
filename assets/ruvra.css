@@ -1998,7 +1998,7 @@ shopify-account.ruvra-header__account {
   }
 }
 
-/* ---------- Hero de marca (estética de logo.html) ---------- */
+/* ---------- Hero de marca: slogan editorial con máquina de escribir ---------- */
 .ruvra-brand {
   padding-top: 1.6rem;
 }
@@ -2006,40 +2006,25 @@ shopify-account.ruvra-header__account {
 .ruvra-brand__panel {
   position: relative;
   display: flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 42rem;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 44rem;
+  box-sizing: border-box;
+  padding: 4.4rem 3.2rem 4.2rem;
   overflow: hidden;
   border-radius: 1.8rem;
-  background: var(--ruvra-black);
+  background:
+    radial-gradient(90% 70% at 85% 0%, rgba(255, 255, 255, 0.09), rgba(255, 255, 255, 0) 60%),
+    radial-gradient(60% 50% at 0% 100%, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0) 70%),
+    var(--ruvra-black);
   color: var(--ruvra-white);
 }
 
 .ruvra-brand__frame {
   position: absolute;
   inset: 2.4rem;
-  border: 1px solid #1f1f1f;
+  border: 1px solid #1c1c1c;
   pointer-events: none;
-}
-
-.ruvra-brand__line {
-  position: absolute;
-  background: #111111;
-  pointer-events: none;
-}
-
-.ruvra-brand__line--v {
-  top: 2.4rem;
-  bottom: 2.4rem;
-  left: 50%;
-  width: 1px;
-}
-
-.ruvra-brand__line--h {
-  left: 2.4rem;
-  right: 2.4rem;
-  top: 50%;
-  height: 1px;
 }
 
 .ruvra-brand__corner {
@@ -2075,54 +2060,99 @@ shopify-account.ruvra-header__account {
 .ruvra-brand__corner--bl { bottom: calc(2.4rem - 7px); left: calc(2.4rem - 6px); }
 .ruvra-brand__corner--br { bottom: calc(2.4rem - 7px); right: calc(2.4rem - 7px); }
 
-.ruvra-brand__center {
+.ruvra-brand__top {
   position: relative;
-  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.6rem;
+}
+
+.ruvra-brand__mark {
+  color: var(--ruvra-white);
+}
+
+.ruvra-brand__caption {
+  margin: 0;
+  color: #8f8f8f;
+  font: 400 1.1rem/1.2 'Geist Mono', ui-monospace, 'SFMono-Regular', Menlo, monospace;
+  letter-spacing: 0.02em;
+}
+
+.ruvra-brand__caption--bottom {
+  position: relative;
+  margin-top: 2.4rem;
+}
+
+.ruvra-brand__body {
+  position: relative;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  gap: 1.6rem;
-  padding: 6rem 3.2rem;
-  text-align: center;
+  align-items: flex-start;
+  gap: 2rem;
+  margin-top: 6rem;
 }
 
-.ruvra-brand__logo {
+.ruvra-slogan {
+  display: block;
+}
+
+.ruvra-slogan__h {
   margin: 0;
   color: var(--ruvra-white);
-  line-height: 0;
+  font: 700 min(4.4rem, 11.2vw)/0.95 var(--ruvra-font);
+  letter-spacing: -0.055em;
 }
 
-.ruvra-brand__logo-svg {
-  width: min(62vw, 36rem);
-  height: auto;
+.ruvra-slogan__line {
+  display: block;
+  white-space: nowrap;
+}
+
+.ruvra-slogan__line--muted {
+  color: #5c5c5c;
+}
+
+/* Punto final = cuadrado del logo (lado 0,167 em apoyado en la línea de base) */
+.ruvra-slogan__sq {
+  display: inline-block;
+  width: 0.167em;
+  height: 0.167em;
+  margin-left: 0.09em;
+  background: currentColor;
+  vertical-align: baseline;
+}
+
+.ruvra-slogan__line--muted .ruvra-slogan__sq {
+  background: var(--ruvra-white);
+}
+
+.ruvra-slogan__sq.is-caret {
+  animation: ruvra-caret 0.9s steps(1) infinite;
+}
+
+@keyframes ruvra-caret {
+  50% {
+    opacity: 0;
+  }
 }
 
 .ruvra-brand__tagline {
-  max-width: 30rem;
+  max-width: 34rem;
   margin: 0;
-  color: #bdbdbd;
+  color: #a8a8a8;
   font-size: 1.5rem;
   line-height: 1.5;
 }
 
-.ruvra-brand .ruvra-btn {
-  margin-top: 0.8rem;
-}
+@media screen and (min-width: 750px) {
+  .ruvra-brand__panel {
+    padding-inline: 4.8rem;
+  }
 
-.ruvra-brand__caption {
-  position: absolute;
-  bottom: 3.8rem;
-  margin: 0;
-  color: #8f8f8f;
-  font: 400 1.1rem/1 'Geist Mono', ui-monospace, 'SFMono-Regular', Menlo, monospace;
-}
-
-.ruvra-brand__caption--left {
-  left: 4rem;
-}
-
-.ruvra-brand__caption--right {
-  right: 4rem;
+  .ruvra-slogan__h {
+    font-size: 8.8rem;
+  }
 }
 
 @media screen and (min-width: 990px) {
@@ -2131,16 +2161,26 @@ shopify-account.ruvra-header__account {
   }
 
   .ruvra-brand__panel {
-    min-height: 48rem;
+    min-height: 56rem;
+    padding: 5.2rem 6.4rem 5.2rem;
     border-radius: var(--ruvra-radius-banner);
   }
 
-  .ruvra-brand__logo-svg {
-    width: 58rem;
+  .ruvra-brand__body {
+    gap: 2.8rem;
+  }
+
+  .ruvra-slogan__h {
+    font-size: 13.2rem;
+    line-height: 0.92;
   }
 
   .ruvra-brand__tagline {
-    max-width: 48rem;
+    max-width: 44rem;
     font-size: 1.8rem;
+  }
+
+  .ruvra-brand__caption {
+    font-size: 1.2rem;
   }
 }
