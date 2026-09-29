@@ -1,0 +1,22 @@
+{% comment %}
+  Video del hero dentro de un <template>: ruvra-hero-video.js lo activa solo si su contenedor
+  está visible (así en celular no se descarga el video de computadora, y viceversa).
+
+  Accepts:
+  - video: {Object} video (valor de un metacampo de archivo)
+{% endcomment %}
+<template data-ruvra-hero-video>
+  {{-
+    video
+    | video_tag:
+      autoplay: true,
+      loop: true,
+      muted: true,
+      playsinline: true,
+      controls: false,
+      preload: 'metadata',
+      image_size: '1200x',
+      class: 'ruvra-hero__img ruvra-hero__video'
+  -}}
+</template>
+{{- video.preview_image | image_url: width: 1200 | image_tag: loading: 'lazy', class: 'ruvra-hero__img ruvra-hero__video-poster', alt: '' -}}
