@@ -152,13 +152,42 @@
     },
     "promo": {
       "type": "ruvra-promo-banner",
+      "blocks": {
+        "pad": {
+          "type": "item",
+          "settings": {
+            "label": "Pad",
+            "demo": "pad"
+          }
+        },
+        "inflador": {
+          "type": "item",
+          "settings": {
+            "label": "Inflador",
+            "demo": "inflador"
+          }
+        },
+        "soporte": {
+          "type": "item",
+          "settings": {
+            "label": "Soporte",
+            "demo": "soporte"
+          }
+        }
+      },
+      "block_order": [
+        "pad",
+        "inflador",
+        "soporte"
+      ],
       "settings": {
-        "demo": "inflador",
-        "badge": "AHORRÁ [X]%",
+        "discount": "[X]",
+        "marquee_text": "Armá tu kit | 2 o más productos | Ahorrá {descuento}%",
         "heading": "Armá tu kit de ruta.",
         "text": "Llevando 2 o más productos, pagás menos. Se aplica solo en el carrito.",
         "button_label": "Ver combos",
-        "button_link": ""
+        "button_link": "",
+        "stamp_text": "2 O MÁS · AHORRÁ {descuento}% · 2 O MÁS · AHORRÁ {descuento}% · "
       }
     }
   },

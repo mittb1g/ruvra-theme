@@ -1,37 +1,86 @@
+{%- liquid
+  assign discount = section.settings.discount | default: '[X]'
+  assign marquee = section.settings.marquee_text | replace: '{descuento}', discount
+  assign stamp = section.settings.stamp_text | replace: '{descuento}', discount
+-%}
+
 <div class="ruvra-block ruvra-container">
-  <div class="ruvra-promo">
-    <div class="ruvra-promo__content">
-      {%- if section.settings.badge != blank -%}
-        <span class="ruvra-badge ruvra-badge--lg ruvra-badge--inverse">{{ section.settings.badge | escape }}</span>
-      {%- endif -%}
-      {%- if section.settings.heading != blank -%}
-        <h2 class="ruvra-promo__heading">{{ section.settings.heading | escape }}</h2>
-      {%- endif -%}
-      {%- if section.settings.text != blank -%}
-        <p class="ruvra-promo__text">{{ section.settings.text | escape }}</p>
-      {%- endif -%}
-      {%- if section.settings.button_label != blank -%}
-        <a href="{{ section.settings.button_link | default: routes.all_products_collection_url }}" class="ruvra-btn ruvra-btn--inverse">
-          {{- section.settings.button_label | escape -}}
-        </a>
-      {%- endif -%}
-    </div>
-    <div class="ruvra-promo__media">
-      {%- if section.settings.image != blank -%}
-        {{
-          section.settings.image
-          | image_url: width: 1400
-          | image_tag:
-            loading: 'lazy',
-            widths: '400, 600, 800, 1000, 1400',
-            sizes: '(min-width: 1440px) 672px, (min-width: 990px) 50vw, 100vw',
-            alt: section.settings.image.alt,
-            class: 'ruvra-promo__img'
-        }}
-      {%- elsif section.settings.demo != 'none' -%}
-        {%- render 'ruvra-demo-image', demo: section.settings.demo, class: 'ruvra-promo__img' -%}
-      {%- else -%}
-        {{ 'lifestyle-2' | placeholder_svg_tag: 'ruvra-promo__img ruvra-placeholder' }}
+  <div class="ruvra-kit">
+    {%- if marquee != blank -%}
+      <div class="ruvra-kit__marquee" aria-hidden="true">
+        <div class="ruvra-kit__marquee-track">
+          {%- for i in (1..2) -%}
+            <div class="ruvra-kit__marquee-group">
+              {%- assign parts = marquee | split: '|' -%}
+              {%- for n in (1..3) -%}
+                {%- for part in parts -%}
+                  <span>{{ part | strip | escape }}</span><i class="ruvra-kit__sq"></i>
+                {%- endfor -%}
+              {%- endfor -%}
+            </div>
+          {%- endfor -%}
+        </div>
+      </div>
+    {%- endif -%}
+
+    <div class="ruvra-kit__body">
+      <div class="ruvra-kit__copy">
+        <p class="ruvra-kit__big" aria-hidden="true">-{{ discount | escape }}<span>%</span></p>
+        {%- if section.settings.heading != blank -%}
+          <h2 class="ruvra-kit__heading">{{ section.settings.heading | escape }}</h2>
+        {%- endif -%}
+        {%- if section.settings.text != blank -%}
+          <p class="ruvra-kit__text">{{ section.settings.text | escape }}</p>
+        {%- endif -%}
+
+        <div class="ruvra-kit__cta">
+          {%- if section.settings.button_label != blank -%}
+            <a href="{{ section.settings.button_link | default: routes.all_products_collection_url }}" class="ruvra-btn ruvra-btn--inverse">
+              {{- section.settings.button_label | escape -}}
+            </a>
+          {%- endif -%}
+          {%- if stamp != blank -%}
+            <svg class="ruvra-kit__stamp" viewBox="0 0 120 120" aria-hidden="true" focusable="false">
+              <defs>
+                <path id="KitStamp-{{ section.id }}" d="M60 60 m-44 0 a44 44 0 1 1 88 0 a44 44 0 1 1 -88 0"/>
+              </defs>
+              <g class="ruvra-kit__stamp-ring">
+                <text><textPath href="#KitStamp-{{ section.id }}" textLength="276">{{ stamp | escape }}</textPath></text>
+              </g>
+              <rect x="54" y="54" width="12" height="12" fill="currentColor"/>
+            </svg>
+          {%- endif -%}
+        </div>
+      </div>
+
+      {%- if section.blocks.size > 0 -%}
+        <ul class="ruvra-kit__items" role="list">
+          {%- for block in section.blocks -%}
+            {%- liquid
+              assign item_product = block.settings.product
+              assign item_label = block.settings.label | default: item_product.title
+              assign item_url = item_product.url | default: section.settings.button_link
+            -%}
+            <li class="ruvra-kit__item" {{ block.shopify_attributes }}>
+              {%- if item_url != blank -%}<a href="{{ item_url }}" class="ruvra-kit__tile">{%- else -%}<div class="ruvra-kit__tile">{%- endif -%}
+                <span class="ruvra-kit__media">
+                  {%- if block.settings.image != blank -%}
+                    {{ block.settings.image | image_url: width: 500 | image_tag: loading: 'lazy', widths: '200, 300, 500', sizes: '(min-width: 990px) 180px, 30vw', alt: '', class: 'ruvra-kit__img' }}
+                  {%- elsif item_product.featured_media -%}
+                    {{ item_product.featured_media.preview_image | image_url: width: 500 | image_tag: loading: 'lazy', widths: '200, 300, 500', sizes: '(min-width: 990px) 180px, 30vw', alt: '', class: 'ruvra-kit__img' }}
+                  {%- elsif block.settings.demo != 'none' -%}
+                    {%- render 'ruvra-demo-image', demo: block.settings.demo, class: 'ruvra-kit__img' -%}
+                  {%- else -%}
+                    {{ 'product-apparel-1' | placeholder_svg_tag: 'ruvra-kit__img ruvra-placeholder' }}
+                  {%- endif -%}
+                </span>
+                {%- if item_label != blank -%}
+                  <span class="ruvra-kit__label">{{ item_label | escape }}</span>
+                {%- endif -%}
+              {%- if item_url != blank -%}</a>{%- else -%}</div>{%- endif -%}
+            </li>
+          {%- endfor -%}
+        </ul>
       {%- endif -%}
     </div>
   </div>
@@ -39,33 +88,24 @@
 
 {% schema %}
 {
-  "name": "ruvra · Banner promo",
+  "name": "ruvra · Combos",
   "tag": "section",
   "class": "section-ruvra-promo",
+  "max_blocks": 3,
   "settings": [
     {
-      "type": "image_picker",
-      "id": "image",
-      "label": "Imagen"
-    },
-    {
-      "type": "select",
-      "id": "demo",
-      "label": "Imagen de muestra",
-      "info": "Solo se ve mientras no subas una imagen arriba.",
-      "options": [
-        { "value": "none", "label": "Ninguna" },
-        { "value": "pad", "label": "Pad de carga" },
-        { "value": "inflador", "label": "Inflador" },
-        { "value": "soporte", "label": "Soporte" }
-      ],
-      "default": "none"
+      "type": "text",
+      "id": "discount",
+      "label": "Descuento (solo el número)",
+      "default": "[X]",
+      "info": "Se muestra gigante como \"-15%\". Tiene que coincidir con el descuento automático que configures en Shopify."
     },
     {
       "type": "text",
-      "id": "badge",
-      "label": "Etiqueta",
-      "default": "AHORRÁ [X]%"
+      "id": "marquee_text",
+      "label": "Cinta animada",
+      "default": "Armá tu kit | 2 o más productos | Ahorrá {descuento}%",
+      "info": "Separá las frases con |. {descuento} se reemplaza por el número de arriba. Vacío = sin cinta."
     },
     {
       "type": "text",
@@ -89,11 +129,60 @@
       "type": "url",
       "id": "button_link",
       "label": "Link del botón"
+    },
+    {
+      "type": "text",
+      "id": "stamp_text",
+      "label": "Sello giratorio",
+      "default": "2 O MÁS · AHORRÁ {descuento}% · 2 O MÁS · AHORRÁ {descuento}% · ",
+      "info": "Vacío = sin sello."
+    }
+  ],
+  "blocks": [
+    {
+      "type": "item",
+      "name": "Producto del kit",
+      "settings": [
+        {
+          "type": "product",
+          "id": "product",
+          "label": "Producto"
+        },
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Nombre corto (opcional)",
+          "info": "Si queda vacío, usa el nombre del producto."
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Imagen (opcional)"
+        },
+        {
+          "type": "select",
+          "id": "demo",
+          "label": "Imagen de muestra",
+          "info": "Solo se ve si no hay producto ni imagen.",
+          "options": [
+            { "value": "none", "label": "Ninguna" },
+            { "value": "pad", "label": "Pad de carga" },
+            { "value": "inflador", "label": "Inflador" },
+            { "value": "soporte", "label": "Soporte" }
+          ],
+          "default": "none"
+        }
+      ]
     }
   ],
   "presets": [
     {
-      "name": "ruvra · Banner promo"
+      "name": "ruvra · Combos",
+      "blocks": [
+        { "type": "item", "settings": { "label": "Pad", "demo": "pad" } },
+        { "type": "item", "settings": { "label": "Inflador", "demo": "inflador" } },
+        { "type": "item", "settings": { "label": "Soporte", "demo": "soporte" } }
+      ]
     }
   ],
   "disabled_on": {
