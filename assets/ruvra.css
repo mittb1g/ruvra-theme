@@ -756,6 +756,7 @@ shopify-account.ruvra-header__account {
   background: var(--ruvra-hero-bg-image-phone, var(--ruvra-hero-bg-image)) center / cover no-repeat, var(--ruvra-hero-bg, var(--ruvra-surface));
 }
 
+
 /* Con imagen de fondo, la imagen es todo el visual: sin foto de producto encima */
 .ruvra-hero__slide.has-bg-image .ruvra-hero__media {
   display: none;
@@ -1739,7 +1740,7 @@ shopify-account.ruvra-header__account {
   }
 
   .ruvra-hero__heading {
-    font-size: 6.8rem;
+    font-size: clamp(5.2rem, 4.8vw, 6.8rem);
     line-height: 1;
   }
 
@@ -2305,5 +2306,37 @@ shopify-account.ruvra-header__account {
 
   .ruvra-brand__caption {
     font-size: 1.2rem;
+  }
+}
+
+/* Tablet (750–989): layout apilado pero con proporciones de pantalla apaisada */
+@media screen and (min-width: 750px) and (max-width: 989px) {
+  .ruvra-hero__slide.has-bg-image {
+    min-height: 52rem;
+    background-image: var(--ruvra-hero-bg-image);
+    background-position: 65% center;
+  }
+
+  .ruvra-hero--m-stacked .ruvra-hero__media,
+  .ruvra-hero--m-stacked .ruvra-hero__media--contain {
+    height: auto;
+    aspect-ratio: 16 / 9;
+  }
+
+  .ruvra-hero--m-stacked .ruvra-hero__content {
+    padding: 3.2rem 4rem 3.6rem;
+  }
+
+  .ruvra-hero__heading {
+    font-size: 5.6rem;
+  }
+
+  .ruvra-hero__buttons {
+    flex-direction: row;
+    gap: 1.2rem;
+  }
+
+  .ruvra-hero__buttons .ruvra-btn {
+    padding: 0 3.2rem;
   }
 }
