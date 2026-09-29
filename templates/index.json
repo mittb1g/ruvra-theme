@@ -164,7 +164,7 @@
       "type": "ruvra-brand-hero",
       "settings": {
         "tagline": "Accesorios automotrices para el uso de todos los días.",
-        "button_label": "Comprar ahora",
+        "button_label": "",
         "product": "ruvra-air-flow",
         "button_link": "",
         "caption_left": "accesorios automotrices",
