@@ -1,0 +1,90 @@
+{% comment %}
+  Decide qué producto muestra una slide del hero y devuelve su handle (vacío = la slide no lleva producto u se oculta).
+  Uso: {% capture handle %}{% render 'ruvra-hero-resolve', block: block %}{% endcapture %}
+
+  Tipos (block.settings.source):
+  - manual: sin producto (slide de campaña o marca)
+  - product: el producto elegido
+  - tag: primer producto con la etiqueta (default: la de "Trending" en la configuración del tema)
+  - collection: primer producto de la colección, en el orden que tenga en el admin
+  - newest: el producto más nuevo
+  - on_sale: el de mayor % de descuento
+
+  Si el producto está agotado (block.settings.sold_out):
+  - next: usa el siguiente disponible (para "producto elegido", cualquier otro disponible de la tienda)
+  - hide: la slide no se muestra
+  - show: se muestra igual, marcado como agotado
+{% endcomment %}
+
+{%- liquid
+  assign source = block.settings.source
+  assign rule = block.settings.sold_out
+  assign chosen = blank
+
+  if source == 'product'
+    assign single = block.settings.product
+    if single != blank
+      if single.available or rule != 'next'
+        assign chosen = single
+      else
+        for p in collections.all.products
+          if p.available and p.id != single.id
+            assign chosen = p
+            break
+          endif
+        endfor
+      endif
+    endif
+  elsif source == 'on_sale'
+    assign best_percent = 0
+    for p in collections.all.products
+      if rule == 'next' and p.available == false
+        continue
+      endif
+      if p.compare_at_price > p.price
+        assign percent = p.compare_at_price | minus: p.price | times: 100 | divided_by: p.compare_at_price
+        if percent > best_percent
+          assign best_percent = percent
+          assign chosen = p
+        endif
+      endif
+    endfor
+  elsif source != 'manual'
+    case source
+      when 'collection'
+        assign candidates = block.settings.collection.products
+      when 'newest'
+        assign candidates = collections.all.products | sort: 'created_at' | reverse
+      else
+        assign candidates = collections.all.products
+    endcase
+
+    assign wanted_tag = block.settings.tag | default: settings.ruvra_tag_trending | default: 'trending' | downcase | strip
+
+    for p in candidates
+      if source == 'tag'
+        assign has_tag = false
+        for t in p.tags
+          assign t_down = t | downcase
+          if t_down == wanted_tag
+            assign has_tag = true
+            break
+          endif
+        endfor
+        unless has_tag
+          continue
+        endunless
+      endif
+      if rule == 'next' and p.available == false
+        continue
+      endif
+      assign chosen = p
+      break
+    endfor
+  endif
+
+  if rule == 'hide' and chosen != blank and chosen.available == false
+    assign chosen = blank
+  endif
+-%}
+{%- if chosen != blank -%}{{ chosen.handle }}{%- endif -%}

@@ -549,10 +549,16 @@
       "badge_combo": "COMBO",
       "badge_sale": "-{{ percent }}%",
       "installments_html": "{{ count }} cuotas<span class=\"ruvra-installments__long\"> sin interés</span> de {{ amount }}",
-      "view_combo": "Ver combo"
+      "view_combo": "Ver combo",
+      "badge_sold_out": "AGOTADO",
+      "badge_trending": "TRENDING"
     },
     "sections": {
       "view_all": "Ver todo"
+    },
+    "hero": {
+      "buy_now": "Comprar ahora",
+      "view_product": "Ver producto"
     }
   }
 }

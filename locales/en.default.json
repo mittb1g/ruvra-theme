@@ -537,10 +537,16 @@
       "badge_combo": "BUNDLE",
       "badge_sale": "-{{ percent }}%",
       "installments_html": "{{ count }} interest-free<span class=\"ruvra-installments__long\"> installments</span> of {{ amount }}",
-      "view_combo": "View bundle"
+      "view_combo": "View bundle",
+      "badge_sold_out": "SOLD OUT",
+      "badge_trending": "TRENDING"
     },
     "sections": {
       "view_all": "View all"
+    },
+    "hero": {
+      "buy_now": "Buy now",
+      "view_product": "View product"
     }
   }
 }

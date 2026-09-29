@@ -753,8 +753,10 @@ shopify-account.ruvra-header__account {
   overflow: hidden;
 }
 
-.ruvra-hero--m-stacked .ruvra-hero__media--contain {
-  height: 26rem;
+@media screen and (max-width: 989px) {
+  .ruvra-hero--m-stacked .ruvra-hero__media--contain {
+    height: 26rem;
+  }
 }
 
 .ruvra-hero__img {
@@ -837,6 +839,15 @@ shopify-account.ruvra-header__account {
 .ruvra-hero__media--split {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.ruvra-hero__slide.is-sold-out .ruvra-hero__img {
+  opacity: 0.45;
+  filter: grayscale(1);
+}
+
+.ruvra-badge--muted {
+  background: #6b6b6b;
 }
 
 .ruvra-hero__plus {

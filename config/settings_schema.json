@@ -43,6 +43,12 @@
         "default": "combo"
       },
       {
+        "type": "text",
+        "id": "ruvra_tag_trending",
+        "label": "Etiqueta de producto para TRENDING",
+        "default": "trending"
+      },
+      {
         "type": "checkbox",
         "id": "ruvra_show_wishlist",
         "label": "Mostrar botón de favoritos",

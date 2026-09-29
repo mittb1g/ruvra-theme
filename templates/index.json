@@ -6,15 +6,16 @@
         "producto": {
           "type": "slide",
           "settings": {
+            "source": "product",
             "product": "ruvra-air-flow",
+            "sold_out": "show",
             "fit": "contain",
             "demo": "none",
-            "demo_2": "none",
-            "badge": "NUEVO",
-            "heading": "Ruvra Air Flow.",
-            "text": "Inflador digital portátil a batería. [Texto del producto]",
+            "badge": "",
+            "heading": "",
+            "text": "",
             "text_mobile": "",
-            "button_label_1": "Comprar ahora",
+            "button_label_1": "",
             "button_link_1": "",
             "button_label_2": "",
             "button_link_2": ""

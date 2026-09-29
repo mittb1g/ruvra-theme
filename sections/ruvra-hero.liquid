@@ -1,12 +1,93 @@
 {%- liquid
-  assign slide_count = section.blocks.size
+  assign visible = ''
+  for block in section.blocks
+    capture resolved
+      render 'ruvra-hero-resolve', block: block
+    endcapture
+    assign resolved = resolved | strip
+    if block.settings.source == 'manual' or resolved != blank
+      assign visible = visible | append: forloop.index0 | append: ':' | append: resolved | append: '|'
+    endif
+  endfor
+  assign visible_list = visible | split: '|'
+  assign slide_count = visible_list.size
 -%}
 
+{%- if slide_count > 0 -%}
 <ruvra-slider class="ruvra-hero ruvra-container ruvra-hero--m-{{ section.settings.mobile_layout }} ruvra-hero--r-{{ section.settings.mobile_ratio }}" data-autoplay="{{ section.settings.autoplay }}" data-interval="{{ section.settings.interval | times: 1000 }}">
   <div class="ruvra-hero__track" data-track>
-    {%- for block in section.blocks -%}
+    {%- for entry in visible_list -%}
+      {%- liquid
+        assign parts = entry | split: ':'
+        assign block_index = parts[0] | plus: 0
+        assign block = section.blocks[block_index]
+        assign hp = blank
+        if parts[1] != blank
+          assign hp = all_products[parts[1]]
+        endif
+
+        assign sold_out = false
+        if hp != blank and hp.available == false
+          assign sold_out = true
+        endif
+
+        assign badge = block.settings.badge
+        if badge == blank and hp != blank
+          assign tag_new = settings.ruvra_tag_new | downcase | strip
+          assign tag_combo = settings.ruvra_tag_combo | downcase | strip
+          assign tag_trending = block.settings.tag | default: settings.ruvra_tag_trending | default: 'trending' | downcase | strip
+          assign has_new = false
+          assign has_combo = false
+          assign has_trending = false
+          for t in hp.tags
+            assign t_down = t | downcase
+            if t_down == tag_new
+              assign has_new = true
+            elsif t_down == tag_combo
+              assign has_combo = true
+            elsif t_down == tag_trending
+              assign has_trending = true
+            endif
+          endfor
+          assign hp_variant = hp.selected_or_first_available_variant
+          if sold_out
+            assign badge = 'ruvra.card.badge_sold_out' | t
+          elsif has_combo
+            assign badge = 'ruvra.card.badge_combo' | t
+          elsif hp_variant.compare_at_price > hp_variant.price
+            assign off = hp_variant.compare_at_price | minus: hp_variant.price | times: 100.0 | divided_by: hp_variant.compare_at_price | round
+            assign badge = 'ruvra.card.badge_sale' | t: percent: off
+          elsif has_trending or block.settings.source == 'tag'
+            assign badge = 'ruvra.card.badge_trending' | t
+          elsif has_new or block.settings.source == 'newest'
+            assign badge = 'ruvra.card.badge_new' | t
+          endif
+        endif
+
+        assign heading = block.settings.heading
+        if heading == blank and hp != blank
+          assign heading = hp.title
+        endif
+        assign text = block.settings.text
+        if text == blank and hp != blank
+          assign text = hp.description | strip_html | truncatewords: 20
+        endif
+
+        assign primary_label = block.settings.button_label_1
+        if primary_label == blank and hp != blank
+          if sold_out
+            assign primary_label = 'ruvra.hero.view_product' | t
+          else
+            assign primary_label = 'ruvra.hero.buy_now' | t
+          endif
+        endif
+        assign primary_url = block.settings.button_link_1 | default: hp.url | default: routes.all_products_collection_url
+
+        assign media_fit = block.settings.fit
+        assign is_first = forloop.first
+      -%}
       <div
-        class="ruvra-hero__slide"
+        class="ruvra-hero__slide{% if sold_out %} is-sold-out{% endif %}"
         id="Slide-{{ section.id }}-{{ forloop.index }}"
         role="group"
         aria-roledescription="slide"
@@ -14,16 +95,13 @@
         data-slide
         {{ block.shopify_attributes }}
       >
-        {%- liquid
-          assign kit = block.settings.product
-          assign has_second = false
-          if block.settings.video == blank
-            if block.settings.image_2 != blank or block.settings.demo_2 != 'none'
-              assign has_second = true
+        <div class="ruvra-hero__media ruvra-hero__media--{{ media_fit }}">
+          {%- liquid
+            assign hero_loading = 'lazy'
+            if is_first and section.index == 1
+              assign hero_loading = 'eager'
             endif
-          endif
-        -%}
-        <div class="ruvra-hero__media ruvra-hero__media--{{ block.settings.fit }}{% if has_second %} ruvra-hero__media--split{% endif %}">
+          -%}
           {%- if block.settings.video != blank -%}
             {{
               block.settings.video
@@ -38,12 +116,7 @@
                 class: 'ruvra-hero__img ruvra-hero__video'
             }}
           {%- elsif block.settings.image != blank -%}
-            {%- liquid
-              assign hero_loading = 'lazy'
-              if forloop.first and section.index == 1
-                assign hero_loading = 'eager'
-              endif
-            -%}
+            {%- assign image_alt = block.settings.image.alt | escape -%}
             {{
               block.settings.image
               | image_url: width: 1600
@@ -52,68 +125,54 @@
                 widths: '400, 600, 800, 1000, 1200, 1600',
                 sizes: '(min-width: 1440px) 672px, (min-width: 990px) 50vw, 100vw',
                 class: 'ruvra-hero__img',
-                alt: block.settings.image.alt
+                alt: image_alt
             }}
-          {%- elsif kit.featured_media -%}
-            {%- assign kit_alt = kit.featured_media.alt | default: kit.title | escape -%}
+          {%- elsif hp.featured_media -%}
+            {%- assign hp_alt = hp.featured_media.alt | default: hp.title | escape -%}
             {{
-              kit.featured_media.preview_image
+              hp.featured_media.preview_image
               | image_url: width: 1600
               | image_tag:
-                loading: 'eager',
+                loading: hero_loading,
                 widths: '400, 600, 800, 1000, 1200, 1600',
                 sizes: '(min-width: 1440px) 672px, (min-width: 990px) 50vw, 100vw',
                 class: 'ruvra-hero__img',
-                alt: kit_alt
+                alt: hp_alt
             }}
           {%- elsif block.settings.demo != 'none' -%}
-            {%- liquid
-              assign demo_loading = 'lazy'
-              if forloop.first
-                assign demo_loading = 'eager'
-              endif
-            -%}
-            {%- render 'ruvra-demo-image', demo: block.settings.demo, class: 'ruvra-hero__img', loading: demo_loading -%}
+            {%- render 'ruvra-demo-image', demo: block.settings.demo, class: 'ruvra-hero__img', loading: hero_loading -%}
           {%- else -%}
             {{ 'hero-apparel-1' | placeholder_svg_tag: 'ruvra-hero__img ruvra-placeholder' }}
-          {%- endif -%}
-          {%- if has_second -%}
-            {%- if block.settings.image_2 != blank -%}
-              {{ block.settings.image_2 | image_url: width: 1000 | image_tag: loading: 'lazy', widths: '300, 500, 800, 1000', sizes: '(min-width: 990px) 336px, 50vw', class: 'ruvra-hero__img', alt: block.settings.image_2.alt }}
-            {%- else -%}
-              {%- render 'ruvra-demo-image', demo: block.settings.demo_2, class: 'ruvra-hero__img' -%}
-            {%- endif -%}
-            <span class="ruvra-hero__plus" aria-hidden="true">+</span>
           {%- endif -%}
         </div>
 
         <div class="ruvra-hero__content">
-          {%- if block.settings.badge != blank -%}
-            <span class="ruvra-badge ruvra-badge--lg">{{ block.settings.badge | escape }}</span>
+          {%- if badge != blank -%}
+            <span class="ruvra-badge ruvra-badge--lg{% if sold_out %} ruvra-badge--muted{% endif %}">{{ badge | escape }}</span>
           {%- endif -%}
-          {%- if block.settings.heading != blank -%}
-            {%- if forloop.first -%}
-              <h1 class="ruvra-hero__heading">{{ block.settings.heading | escape }}</h1>
+          {%- if heading != blank -%}
+            {%- if is_first -%}
+              <h1 class="ruvra-hero__heading">{{ heading | escape }}</h1>
             {%- else -%}
-              <h2 class="ruvra-hero__heading">{{ block.settings.heading | escape }}</h2>
+              <h2 class="ruvra-hero__heading">{{ heading | escape }}</h2>
             {%- endif -%}
           {%- endif -%}
-          {%- if block.settings.text != blank -%}
+          {%- if text != blank -%}
             {%- if block.settings.text_mobile != blank -%}
-              <p class="ruvra-hero__text ruvra-hero__text--desktop">{{ block.settings.text | escape }}</p>
+              <p class="ruvra-hero__text ruvra-hero__text--desktop">{{ text | escape }}</p>
               <p class="ruvra-hero__text ruvra-hero__text--mobile">{{ block.settings.text_mobile | escape }}</p>
             {%- else -%}
-              <p class="ruvra-hero__text">{{ block.settings.text | escape }}</p>
+              <p class="ruvra-hero__text">{{ text | escape }}</p>
             {%- endif -%}
           {%- endif -%}
-          {%- if kit != blank -%}
-            <div class="ruvra-hero__price">{%- render 'ruvra-price', product: kit -%}</div>
+          {%- if hp != blank -%}
+            <div class="ruvra-hero__price">{%- render 'ruvra-price', product: hp -%}</div>
           {%- endif -%}
-          {%- if block.settings.button_label_1 != blank or block.settings.button_label_2 != blank -%}
+          {%- if primary_label != blank or block.settings.button_label_2 != blank -%}
             <div class="ruvra-hero__buttons">
-              {%- if block.settings.button_label_1 != blank -%}
-                <a href="{{ block.settings.button_link_1 | default: kit.url | default: routes.all_products_collection_url }}" class="ruvra-btn">
-                  {{- block.settings.button_label_1 | escape -}}
+              {%- if primary_label != blank -%}
+                <a href="{{ primary_url }}" class="ruvra-btn{% if sold_out %} ruvra-btn--outline{% endif %}">
+                  {{- primary_label | escape -}}
                 </a>
               {%- endif -%}
               {%- if block.settings.button_label_2 != blank -%}
@@ -126,7 +185,7 @@
 
           {%- if slide_count > 1 -%}
             <div class="ruvra-hero__dots" role="group" aria-label="{{ 'sections.slideshow.load_slide' | t }}">
-              {%- for dot in section.blocks -%}
+              {%- for dot in visible_list -%}
                 <button
                   type="button"
                   class="ruvra-hero__dot"
@@ -145,6 +204,7 @@
 </ruvra-slider>
 
 <script src="{{ 'ruvra-slider.js' | asset_url }}" defer="defer"></script>
+{%- endif -%}
 
 {% schema %}
 {
@@ -208,16 +268,84 @@
       "name": "Slide",
       "settings": [
         {
+          "type": "select",
+          "id": "source",
+          "label": "Qué muestra esta slide",
+          "options": [
+            {
+              "value": "product",
+              "label": "Un producto que elijo"
+            },
+            {
+              "value": "tag",
+              "label": "Trending (producto con etiqueta)"
+            },
+            {
+              "value": "collection",
+              "label": "El primero de una colección"
+            },
+            {
+              "value": "newest",
+              "label": "Novedad (el producto más nuevo)"
+            },
+            {
+              "value": "on_sale",
+              "label": "Mejor oferta (mayor % de descuento)"
+            },
+            {
+              "value": "manual",
+              "label": "Manual (sin producto)"
+            }
+          ],
+          "default": "product"
+        },
+        {
           "type": "product",
           "id": "product",
           "label": "Producto",
-          "info": "Muestra su precio y cuotas, el botón principal lleva al producto y, si no subís imagen, usa la foto del producto."
+          "info": "Para \"Un producto que elijo\"."
+        },
+        {
+          "type": "text",
+          "id": "tag",
+          "label": "Etiqueta",
+          "info": "Para \"Trending\". Vacío = la etiqueta de Trending de la configuración del tema (trending)."
+        },
+        {
+          "type": "collection",
+          "id": "collection",
+          "label": "Colección",
+          "info": "Para \"El primero de una colección\". Ej: una colección \"Más vendidos\" ordenada por ventas."
+        },
+        {
+          "type": "select",
+          "id": "sold_out",
+          "label": "Si está agotado",
+          "options": [
+            {
+              "value": "next",
+              "label": "Mostrar otro disponible"
+            },
+            {
+              "value": "hide",
+              "label": "Ocultar la slide"
+            },
+            {
+              "value": "show",
+              "label": "Mostrarlo como agotado"
+            }
+          ],
+          "default": "next"
+        },
+        {
+          "type": "header",
+          "content": "Imagen"
         },
         {
           "type": "image_picker",
           "id": "image",
-          "label": "Imagen",
-          "info": "Ideal: cuadrada o 4:3, mínimo 1400 px de ancho."
+          "label": "Imagen (opcional)",
+          "info": "Vacío = la foto del producto."
         },
         {
           "type": "video",
@@ -245,7 +373,7 @@
           "type": "select",
           "id": "demo",
           "label": "Imagen de muestra",
-          "info": "Solo se ve mientras no subas una imagen arriba.",
+          "info": "Solo para slides sin producto ni imagen.",
           "options": [
             {
               "value": "none",
@@ -267,75 +395,48 @@
           "default": "none"
         },
         {
-          "type": "image_picker",
-          "id": "image_2",
-          "label": "Segunda imagen (opcional)",
-          "info": "Se muestra al lado de la primera, con un + en el medio. Ideal para mostrar lo que trae el kit."
-        },
-        {
-          "type": "select",
-          "id": "demo_2",
-          "label": "Segunda imagen de muestra",
-          "options": [
-            {
-              "value": "none",
-              "label": "Ninguna"
-            },
-            {
-              "value": "pad",
-              "label": "Pad de carga"
-            },
-            {
-              "value": "inflador",
-              "label": "Inflador"
-            },
-            {
-              "value": "soporte",
-              "label": "Soporte"
-            }
-          ],
-          "default": "none"
+          "type": "header",
+          "content": "Textos (vacío = automático del producto)"
         },
         {
           "type": "text",
           "id": "badge",
           "label": "Etiqueta",
-          "default": "NUEVO"
+          "info": "Vacío = automática: AGOTADO, COMBO, -X%, TRENDING o NUEVO."
         },
         {
           "type": "text",
           "id": "heading",
           "label": "Título",
-          "default": "Tu auto, mejor equipado."
+          "info": "Vacío = nombre del producto."
         },
         {
           "type": "textarea",
           "id": "text",
           "label": "Texto",
-          "default": "Pad de carga inalámbrica antideslizante. Apoyás el celular y listo: carga sin cables mientras manejás."
+          "info": "Vacío = comienzo de la descripción del producto."
         },
         {
           "type": "textarea",
           "id": "text_mobile",
-          "label": "Texto en celular (opcional)",
-          "info": "Versión más corta. Si queda vacío, se usa el de arriba."
+          "label": "Texto en celular (opcional)"
         },
         {
           "type": "text",
           "id": "button_label_1",
           "label": "Botón principal",
-          "default": "Comprar ahora"
+          "info": "Vacío = \"Comprar ahora\" (o \"Ver producto\" si está agotado)."
         },
         {
           "type": "url",
           "id": "button_link_1",
-          "label": "Link del botón principal"
+          "label": "Link del botón principal",
+          "info": "Vacío = el producto."
         },
         {
           "type": "text",
           "id": "button_label_2",
-          "label": "Botón secundario",
-          "default": "Ver ofertas"
+          "label": "Botón secundario (opcional)"
         },
         {
           "type": "url",
@@ -350,7 +451,10 @@
       "name": "ruvra · Hero",
       "blocks": [
         {
-          "type": "slide"
+          "type": "slide",
+          "settings": {
+            "source": "product"
+          }
         }
       ]
     }
