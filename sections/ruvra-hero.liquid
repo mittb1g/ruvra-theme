@@ -127,6 +127,44 @@
                 class: 'ruvra-hero__img',
                 alt: image_alt
             }}
+          {%- elsif hp.metafields.custom.hero_video != blank -%}
+            {{
+              hp.metafields.custom.hero_video.value
+              | video_tag:
+                autoplay: true,
+                loop: true,
+                muted: true,
+                playsinline: true,
+                controls: false,
+                preload: 'metadata',
+                image_size: '1200x',
+                class: 'ruvra-hero__img ruvra-hero__video'
+            }}
+          {%- elsif hp.metafields.custom.hero_imagen != blank -%}
+            {%- liquid
+              assign mf_desktop = hp.metafields.custom.hero_imagen
+              assign mf_mobile = hp.metafields.custom.hero_imagen_celular
+              assign mf_alt = hp.title | escape
+            -%}
+            <picture>
+              {%- if mf_mobile != blank -%}
+                <source
+                  media="(max-width: 989px)"
+                  srcset="{{ mf_mobile | image_url: width: 500 }} 500w, {{ mf_mobile | image_url: width: 800 }} 800w, {{ mf_mobile | image_url: width: 1100 }} 1100w"
+                  sizes="100vw"
+                >
+              {%- endif -%}
+              {{
+                mf_desktop
+                | image_url: width: 1600
+                | image_tag:
+                  loading: hero_loading,
+                  widths: '400, 600, 800, 1000, 1200, 1600',
+                  sizes: '(min-width: 1440px) 672px, (min-width: 990px) 50vw, 100vw',
+                  class: 'ruvra-hero__img',
+                  alt: mf_alt
+              }}
+            </picture>
           {%- elsif hp.featured_media -%}
             {%- assign hp_alt = hp.featured_media.alt | default: hp.title | escape -%}
             {{
@@ -345,7 +383,7 @@
           "type": "image_picker",
           "id": "image",
           "label": "Imagen (opcional)",
-          "info": "Vacío = la foto del producto."
+          "info": "Vacío = el campo \"Hero · imagen\" o \"Hero · video\" del producto y, si no hay, su foto principal."
         },
         {
           "type": "video",

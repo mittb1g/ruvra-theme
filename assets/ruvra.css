@@ -754,7 +754,11 @@ shopify-account.ruvra-header__account {
 }
 
 @media screen and (max-width: 989px) {
-  .ruvra-hero--m-stacked .ruvra-hero__media--contain {
+  .ruvra-hero--m-stacked .ruvra-hero__media picture {
+  display: contents;
+}
+
+.ruvra-hero__media--contain {
     height: 26rem;
   }
 }
