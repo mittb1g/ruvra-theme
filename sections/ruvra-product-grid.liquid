@@ -2,6 +2,9 @@
 
 {%- liquid
   assign grid_collection = section.settings.collection
+  if grid_collection == blank
+    assign grid_collection = collections['all']
+  endif
   assign view_all_url = section.settings.view_all_link
   if view_all_url == blank and grid_collection != blank
     assign view_all_url = grid_collection.url
@@ -42,7 +45,7 @@
       "type": "collection",
       "id": "collection",
       "label": "Colección",
-      "info": "Para \"Más vendidos\": una colección ordenada por \"Más vendidos\" en el admin."
+      "info": "Si queda vacía, muestra todos los productos de la tienda."
     },
     {
       "type": "range",
