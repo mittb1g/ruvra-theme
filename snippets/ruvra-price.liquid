@@ -35,7 +35,8 @@
 </div>
 
 {%- if installments > 1 and price >= installments_min -%}
+  {%- assign installment_amount = price | divided_by: installments | money -%}
   <p class="ruvra-installments">
-    {{- 'ruvra.card.installments_html' | t: count: installments, amount: price | divided_by: installments | money -}}
+    {{- 'ruvra.card.installments_html' | t: count: installments, amount: installment_amount -}}
   </p>
 {%- endif -%}

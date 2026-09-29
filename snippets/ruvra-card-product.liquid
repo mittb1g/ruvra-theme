@@ -68,6 +68,7 @@
             }}
           {%- endfor -%}
         {%- elsif card_product.featured_media -%}
+          {%- assign media_alt = card_product.featured_media.alt | default: card_product.title | escape -%}
           {{
             card_product.featured_media.preview_image
             | image_url: width: 900
@@ -75,7 +76,7 @@
               loading: loading,
               widths: '300, 400, 600, 900',
               sizes: '(min-width: 990px) 330px, 50vw',
-              alt: card_product.featured_media.alt | default: card_product.title,
+              alt: media_alt,
               class: 'ruvra-card__img'
           }}
         {%- else -%}

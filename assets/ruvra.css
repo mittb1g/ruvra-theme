@@ -1101,6 +1101,7 @@ shopify-account.ruvra-header__account {
 }
 
 .ruvra-card {
+  min-width: 0;
   display: flex;
   flex-direction: column;
   gap: 0.8rem;
@@ -1252,6 +1253,7 @@ shopify-account.ruvra-header__account {
   }
 
   .ruvra-grid--scroll > li {
+    min-width: 0;
     flex: 0 0 calc((100% - 2.4rem) / 2.25);
     scroll-snap-align: start;
   }
